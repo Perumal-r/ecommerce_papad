@@ -96,7 +96,7 @@ export default function Categories() {
       </div>
 
       {/* Add Category Button + Modal */}
-      <div className="p-4 flex justify-center mt-10">
+      {/* <div className="p-4 flex justify-center mt-10">
         <button
           onClick={() => setIsModalOpen(true)}
           className="bg-green-700 text-white px-4 py-2 rounded hover:bg-green-600 cursor-pointer"
@@ -111,7 +111,7 @@ export default function Categories() {
             </div>
           </div>
         )}
-      </div>
+      </div> */}
     </section>
   );
 }

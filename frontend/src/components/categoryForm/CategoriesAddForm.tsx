@@ -39,7 +39,7 @@ const CategoriesAddForm = ({ onClose }: FormProps) => {
           headers: { "Content-Type": "multipart/form-data" },
         }
       );
-      console.log("Success:", formData);
+      console.log("Success:", formData, res);
       toast.success("Category added successfully!", { duration: 1000 });
       dispatch(fetchCategories());
       onClose(); // Close modal after submit

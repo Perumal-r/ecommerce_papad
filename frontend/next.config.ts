@@ -1,5 +1,7 @@
 // import type { NextConfig } from "next";
 
+import path from "path";
+
 // const nextConfig: NextConfig = {
 //   /* config options here */
 // };
@@ -18,6 +20,11 @@ const nextConfig = {
       {
         protocol: "https",
         hostname: "jainampapad.com", // If you're also using this
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "img.freepik.com",
         pathname: "/**",
       },
     ],

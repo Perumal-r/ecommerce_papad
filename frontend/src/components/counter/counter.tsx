@@ -8,20 +8,20 @@ const Counter = () => {
   useEffect(() => {
     const counters = document.querySelectorAll(".timer");
 
-    counters.forEach((counter: any) => {
+    counters.forEach((counter) => {
       const updateCount = () => {
-        const target = +counter.getAttribute("data-to");
-        const speed = +counter.getAttribute("data-speed");
+        const target = +(counter.getAttribute("data-to") || 0);
+        const speed = +(counter.getAttribute("data-speed") || "1000");
         const increment = target / (speed / 16);
         let count = 0;
 
         const animate = () => {
           count += increment;
           if (count < target) {
-            counter.textContent = Math.ceil(count);
+            counter.textContent = Math.ceil(count).toString();
             requestAnimationFrame(animate);
           } else {
-            counter.textContent = target;
+            counter.textContent = target.toString();
           }
         };
 

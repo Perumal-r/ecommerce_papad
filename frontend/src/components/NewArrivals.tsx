@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 export default function NewArrivals() {
   const products = [
     {
@@ -30,7 +32,9 @@ export default function NewArrivals() {
             key={product.name}
             className="bg-white p-4 rounded-lg shadow hover:shadow-lg"
           >
-            <img
+            <Image
+              width={100}
+              height={100}
               src={product.img}
               alt={product.name}
               className="h-40 w-full object-cover rounded"

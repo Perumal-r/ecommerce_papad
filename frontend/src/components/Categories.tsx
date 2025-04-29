@@ -72,7 +72,7 @@ export default function Categories() {
 
         {/* Carousel */}
         <div ref={sliderRef} className="keen-slider p-2">
-          {categories.map((cat: any, index: number) => (
+          {categories.map((cat, index: number) => (
             <div
               key={index}
               className="keen-slider__slide bg-white p-4 rounded-lg shadow hover:shadow-lg flex flex-col h-full"
@@ -96,7 +96,7 @@ export default function Categories() {
       </div>
 
       {/* Add Category Button + Modal */}
-      <div className="p-4 flex justify-center mt-5">
+      <div className="p-4 flex justify-center mt-10">
         <button
           onClick={() => setIsModalOpen(true)}
           className="bg-green-700 text-white px-4 py-2 rounded hover:bg-green-600 cursor-pointer"

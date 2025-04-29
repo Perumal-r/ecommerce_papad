@@ -24,3 +24,10 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* .clip-diagonal-left {
+  clip-path: polygon(0 0%, 85% 0, 100% 100%, 0% 100%);
+} */
+.clip-right-arrow {
+  clip-path: polygon(0 0, 85% 0, 100% 50%, 85% 100%, 0 100%);
+}

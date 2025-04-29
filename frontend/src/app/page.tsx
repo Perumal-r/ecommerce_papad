@@ -1,13 +1,15 @@
-import Hero from "../app/components/Hero";
-import Categories from "../app/components/Categories";
-import Features from "../app/components/Feature";
-import NewArrivals from "../app/components/NewArrivals";
+import Hero from "../components/Hero";
+import Features from "../components/Feature";
+import NewArrivals from "../components/NewArrivals";
+import Categories from "../components/Categories";
 
 export default function Home() {
   return (
     <>
       <Hero />
-      <Categories />
+      <div id="categories-section">
+        <Categories />
+      </div>
       <Features />
       <NewArrivals />
     </>

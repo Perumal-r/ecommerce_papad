@@ -3,6 +3,7 @@
 
 import Image from "next/image";
 import images from "../app/images/heropage.jpg";
+import { MdKeyboardDoubleArrowRight } from "react-icons/md";
 
 export default function HeroBanner() {
   const handleShopNowClick = () => {
@@ -29,7 +30,7 @@ export default function HeroBanner() {
         <div className="absolute bg-green-600 rounded-full w-80 h-80 lg:w-[350px] lg:h-[350px] z-0"></div>
 
         {/* Badge */}
-        <div className="absolute top-4 left-4 bg-orange-500 text-white px-4 py-2 rounded-full font-semibold text-sm shadow-lg z-20">
+        <div className="absolute top-4 left-4 bg-green-700 text-white px-4 py-2 rounded-full font-semibold text-sm shadow-lg z-20">
           Up to 45% Off
         </div>
       </div>
@@ -43,15 +44,17 @@ export default function HeroBanner() {
           Your online resource of healthy recipes.
         </p>
         <p className="text-gray-700">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam
-          vulputate ultrices libero ut vehicula. In sit amet arcu libero. Proin
-          fringilla dui sed arcu fringilla tristique eget ultricies elit.
+          Papad is a thin, crispy Indian snack or accompaniment, usually served
+          with meals or as an appetizer. It is made from a dough of lentil flour
+          commonly urad dal, salt, and spices, which is rolled into thin rounds
+          and then sun-dried or oven-dried. Before serving, papads are either
+          fried or roasted.
         </p>
         <button
           onClick={handleShopNowClick}
-          className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded font-semibold transition cursor-pointer"
+          className="bg-green-700 flex items-center hover:bg-green-600 text-white px-6 py-2 rounded font-semibold transition cursor-pointer"
         >
-          Shop Now
+          Shop Now <MdKeyboardDoubleArrowRight className="ml-1 text-2xl" />
         </button>
       </div>
     </section>

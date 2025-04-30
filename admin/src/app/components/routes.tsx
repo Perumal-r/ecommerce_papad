@@ -1,5 +1,7 @@
+"use client";
+
 import Link from "next/link";
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import adminlogo from "../images/adminpapad.gif";
 import { LuLayoutDashboard } from "react-icons/lu";
 import { FaRegUserCircle } from "react-icons/fa";
@@ -9,6 +11,32 @@ import { CiLogout } from "react-icons/ci";
 import Image from "next/image";
 
 const Routes = () => {
+  const dashboardLinkRef = useRef<HTMLAnchorElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      // If dashboard link exists and the click target is NOT inside it
+      if (
+        dashboardLinkRef.current &&
+        !dashboardLinkRef.current.contains(event.target as Node)
+      ) {
+        // Do NOT allow focus to be removed
+        // Re-focus the dashboard link
+        dashboardLinkRef.current.focus();
+      }
+    };
+
+    // Set focus once on mount
+    dashboardLinkRef.current?.focus();
+
+    // Listen to clicks on whole window
+    window.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      window.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   return (
     <div>
       <button
@@ -49,6 +77,7 @@ const Routes = () => {
             <li>
               <Link
                 href="/"
+                ref={dashboardLinkRef}
                 className="flex items-center p-2 text-gray-900 focus:bg-green-600 focus:text-white rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
               >
                 <LuLayoutDashboard className="focus:bg-green-600 focus:text-white" />

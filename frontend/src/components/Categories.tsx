@@ -6,7 +6,6 @@ import { RootState } from "@/redux/store/store";
 import { useSelector, useDispatch } from "react-redux";
 import { AppDispatch } from "../redux/store/store";
 import Image from "next/image";
-import CategoriesAddForm from "./categoryForm/CategoriesAddForm";
 import { useKeenSlider } from "keen-slider/react";
 import "keen-slider/keen-slider.min.css";
 import { RiContractLeftLine, RiContractRightLine } from "react-icons/ri";
@@ -16,7 +15,6 @@ import Counter from "./counter/counter";
 const useAppDispatch = () => useDispatch<AppDispatch>();
 
 export default function Categories() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const dispatch = useAppDispatch();
   const { categories } = useSelector((state: RootState) => state.category);
 

@@ -25,7 +25,7 @@ export default function PerformanceDonut() {
         },
       },
     },
-    colors: ["#FFB703"],
+    colors: ["#00A63E"],
     labels: ["Performance"],
   });
 

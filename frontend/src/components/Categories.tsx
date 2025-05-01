@@ -71,7 +71,7 @@ export default function Categories() {
         </button>
 
         {/* Carousel */}
-        <div ref={sliderRef} className="keen-slider p-2">
+        <div ref={sliderRef} className="keen-slider p-5">
           {categories.map((cat, index: number) => (
             <div
               key={index}
@@ -93,24 +93,6 @@ export default function Categories() {
             </div>
           ))}
         </div>
-      </div>
-
-      {/* Add Category Button + Modal */}
-      <div className="flex justify-center mt-10">
-        <button
-          onClick={() => setIsModalOpen(true)}
-          className="bg-green-700 text-white px-4 py-2 rounded hover:bg-green-600 cursor-pointer"
-        >
-          Add Categories
-        </button>
-
-        {isModalOpen && (
-          <div className="fixed inset-0 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-            <div className="w-full max-w-md bg-white rounded-lg shadow-lg p-6">
-              <CategoriesAddForm onClose={() => setIsModalOpen(false)} />
-            </div>
-          </div>
-        )}
       </div>
     </section>
   );

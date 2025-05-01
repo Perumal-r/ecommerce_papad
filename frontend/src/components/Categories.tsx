@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { fetchCategories } from "../redux/slice/categorySlice";
 import { RootState } from "@/redux/store/store";
 import { useSelector, useDispatch } from "react-redux";

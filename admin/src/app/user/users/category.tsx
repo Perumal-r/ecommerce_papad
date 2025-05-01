@@ -32,7 +32,7 @@ const CategoriesData = () => {
   const [categories, setCategories] = useState<Category[]>([]);
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState<boolean | undefined>(false);
 
   const fetchCategories = async () => {
     try {

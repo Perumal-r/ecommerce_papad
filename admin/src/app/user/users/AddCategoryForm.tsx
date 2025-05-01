@@ -50,7 +50,7 @@ const AddCategoryForm = ({
     formData.append("image", image);
 
     try {
-      setLoading && setLoading(true);
+      //  setLoading(true);
       let res;
 
       if (editData) {
@@ -78,7 +78,7 @@ const AddCategoryForm = ({
 
       console.log("Success:", formData, res);
       fetchCategories();
-      setLoading && setLoading(false);
+      // setLoading && setLoading(false);
       onClose(); // Close modal after submit
     } catch (error) {
       console.error(error);

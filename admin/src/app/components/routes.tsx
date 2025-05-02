@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import React, { useEffect, useRef } from "react";
+import React from "react";
 import adminlogo from "../images/adminpapad.gif";
 import { LuLayoutDashboard } from "react-icons/lu";
 import { FaRegUserCircle } from "react-icons/fa";
@@ -9,33 +9,17 @@ import { MdOutlineProductionQuantityLimits } from "react-icons/md";
 import { PiSignInBold } from "react-icons/pi";
 import { CiLogout } from "react-icons/ci";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 
 const Routes = () => {
-  const dashboardLinkRef = useRef<HTMLAnchorElement>(null);
+  const pathname = usePathname();
 
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      // If dashboard link exists and the click target is NOT inside it
-      if (
-        dashboardLinkRef.current &&
-        !dashboardLinkRef.current.contains(event.target as Node)
-      ) {
-        // Do NOT allow focus to be removed
-        // Re-focus the dashboard link
-        dashboardLinkRef.current.focus();
-      }
-    };
-
-    // Set focus once on mount
-    dashboardLinkRef.current?.focus();
-
-    // Listen to clicks on whole window
-    window.addEventListener("mousedown", handleClickOutside);
-
-    return () => {
-      window.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
+  const linkClasses = (path: string) =>
+    `flex items-center p-2 rounded-lg group ${
+      pathname === path
+        ? "bg-green-600 text-white"
+        : "text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+    }`;
 
   return (
     <div>
@@ -75,48 +59,32 @@ const Routes = () => {
         <div className="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800">
           <ul className="space-y-2 font-medium">
             <li>
-              <Link
-                href="/"
-                ref={dashboardLinkRef}
-                className="flex items-center p-2 text-gray-900 focus:bg-green-600 focus:text-white rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
-              >
-                <LuLayoutDashboard className="focus:bg-green-600 focus:text-white" />
+              <Link href="/" className={linkClasses("/")}>
+                <LuLayoutDashboard className="me-2" />
                 <span className="ms-3">Dashboard</span>
               </Link>
             </li>
             <li>
-              <Link
-                href="/user"
-                className="flex items-center p-2 text-gray-900 focus:bg-green-600 focus:text-white rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
-              >
-                <FaRegUserCircle className="focus:bg-green-600 focus:text-white" />
+              <Link href="/user" className={linkClasses("/user")}>
+                <FaRegUserCircle className="me-2" />
                 <span className="ms-3">Users</span>
               </Link>
             </li>
             <li>
-              <Link
-                href="/products"
-                className="flex items-center p-2 text-gray-900 focus:bg-green-600 focus:text-white rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
-              >
-                <MdOutlineProductionQuantityLimits className="focus:bg-green-600 focus:text-white" />
+              <Link href="/products" className={linkClasses("/products")}>
+                <MdOutlineProductionQuantityLimits className="me-2" />
                 <span className="ms-3">Products</span>
               </Link>
             </li>
             <li>
-              <Link
-                href="/signin"
-                className="flex items-center p-2 text-gray-900 focus:bg-green-600 focus:text-white rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
-              >
-                <PiSignInBold className="focus:bg-green-600 focus:text-white" />
+              <Link href="/signin" className={linkClasses("/signin")}>
+                <PiSignInBold className="me-2" />
                 <span className="ms-3">Sign In</span>
               </Link>
             </li>
             <li>
-              <Link
-                href="/signup"
-                className="flex items-center p-2 text-gray-900 focus:bg-green-600 focus:text-white rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
-              >
-                <CiLogout className="focus:bg-green-600 focus:text-white text-black" />
+              <Link href="/signup" className={linkClasses("/signup")}>
+                <CiLogout className="me-2" />
                 <span className="ms-3">Sign Up</span>
               </Link>
             </li>

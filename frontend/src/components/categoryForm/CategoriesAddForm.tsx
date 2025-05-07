@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import axios from "axios";
 import toast from "react-hot-toast";
 import { fetchCategories } from "../../redux/slice/categorySlice";
 import { AppDispatch } from "../../redux/store/store";

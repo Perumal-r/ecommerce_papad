@@ -66,14 +66,16 @@ const Routes = () => {
             </li>
             <li>
               <Link href="/user" className={linkClasses("/user")}>
-                <FaRegUserCircle className="me-2" />
-                <span className="ms-3">Users</span>
+                <MdOutlineProductionQuantityLimits className="me-2" />
+
+                <span className="ms-3">Products</span>
               </Link>
             </li>
             <li>
-              <Link href="/products" className={linkClasses("/products")}>
-                <MdOutlineProductionQuantityLimits className="me-2" />
-                <span className="ms-3">Products</span>
+              <Link href="/product" className={linkClasses("/product")}>
+                <FaRegUserCircle className="me-2" />
+
+                <span className="ms-3">users</span>
               </Link>
             </li>
             <li>

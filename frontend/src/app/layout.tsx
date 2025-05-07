@@ -1,12 +1,9 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-// pages/_app.tsx or your root layout
 import "keen-slider/keen-slider.min.css";
 import ReduxProvider from "@/app/ReduxProvider";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
-import { Toaster } from "react-hot-toast";
+import ClientLayout from "./clientLayout"; // 👈 use the client wrapper
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -25,29 +22,16 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-        cz-shortcut-listen="true"
       >
         <ReduxProvider>
-          <Toaster
-            position="top-right"
-            reverseOrder={false}
-            // toastOptions={{
-            //   style: {
-            //     background: "#000", // Black background
-            //     color: "#fff", // White text
-            //   },
-            // }}
-          />
-          <Navbar />
-          {children}
-          <Footer />
+          <ClientLayout>{children}</ClientLayout>
         </ReduxProvider>
       </body>
     </html>

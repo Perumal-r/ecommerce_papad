@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import axios from "axios";
 import toast from "react-hot-toast";
+import APiClient from "@/app/api/ApiClient";
 
 interface FormProps {
   onClose: () => void; // To close modal after submit
@@ -58,8 +58,8 @@ const AddCategoryForm = ({
       if (editData) {
         // Editing: call update API
         formData.append("id", editData._id); // or use route param depending on backend
-        res = await axios.post(
-          `http://localhost:5000/categories/updatecategory/${editData._id}`,
+        res = await APiClient.post(
+          `/categories/updatecategory/${editData._id}`,
           formData,
           {
             headers: { "Content-Type": "multipart/form-data" },
@@ -68,13 +68,9 @@ const AddCategoryForm = ({
         toast.success("Category updated successfully!", { duration: 1000 });
       } else {
         // Adding: call add API
-        res = await axios.post(
-          "http://localhost:5000/categories/addcategory",
-          formData,
-          {
-            headers: { "Content-Type": "multipart/form-data" },
-          }
-        );
+        res = await APiClient.post("/categories/addcategory", formData, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
         toast.success("Category added successfully!", { duration: 1000 });
       }
 

@@ -4,6 +4,8 @@ const app = express();
 const PORT = 5000; // You can change the port
 const cors = require("cors");
 const categoryRoutes = require("./routes/categoriesRoutes");
+const userRoutes = require("./routes/registerRoutes");
+const cartRoutes = require("./routes/cartRouter");
 
 // Connect MongoDB
 mongoose
@@ -21,6 +23,8 @@ app.get("/", (req, res) => {
 });
 
 app.use("/categories", categoryRoutes);
+app.use("/user", userRoutes);
+app.use("/cart", cartRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

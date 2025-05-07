@@ -5,9 +5,9 @@ import AddCategoryForm from "./AddCategoryForm";
 import Image from "next/image";
 import { CiEdit } from "react-icons/ci";
 import { MdDelete } from "react-icons/md";
-import axios from "axios";
 import toast from "react-hot-toast";
 import { IoMdAdd } from "react-icons/io";
+import APiClient from "@/app/api/ApiClient";
 
 interface Category {
   _id: string; // Add the _id property
@@ -37,20 +37,12 @@ const CategoriesData = () => {
   const fetchCategories = async () => {
     try {
       setLoading(true);
-      const response = await fetch(
-        "http://localhost:5000/categories/getcategories",
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      const data = await response.json();
-      setCategories(data);
-      setLoading(false);
+      const response = await APiClient.get("/categories/getcategories");
+      setCategories(response.data);
     } catch (error) {
       console.error("Error fetching categories:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -65,9 +57,7 @@ const CategoriesData = () => {
 
   const handleDelete = async (id: string) => {
     try {
-      await axios.delete(
-        `http://localhost:5000/categories/deletecategory/${id}`
-      );
+      await APiClient.delete(`/categories/deletecategory/${id}`);
       toast.success("Category deleted successfully", { duration: 1000 });
       fetchCategories(); // Refresh list
     } catch (error) {

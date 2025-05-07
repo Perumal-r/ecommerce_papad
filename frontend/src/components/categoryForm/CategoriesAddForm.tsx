@@ -6,6 +6,7 @@ import toast from "react-hot-toast";
 import { fetchCategories } from "../../redux/slice/categorySlice";
 import { AppDispatch } from "../../redux/store/store";
 import { useDispatch } from "react-redux";
+import APiClient from "@/api/ApiClient";
 
 interface FormProps {
   onClose: () => void; // To close modal after submit
@@ -32,13 +33,9 @@ const CategoriesAddForm = ({ onClose }: FormProps) => {
     formData.append("image", image);
 
     try {
-      const res = await axios.post(
-        "http://localhost:5000/categories/addcategory",
-        formData,
-        {
-          headers: { "Content-Type": "multipart/form-data" },
-        }
-      );
+      const res = await APiClient.post(`/categories/addcategory`, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
       console.log("Success:", formData, res);
       toast.success("Category added successfully!", { duration: 1000 });
       dispatch(fetchCategories());

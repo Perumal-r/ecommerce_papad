@@ -11,7 +11,7 @@ const {
 } = require("../controller/categoriescontroller");
 
 // Define route
-router.get("/getcategories",auth, getAllCategories);
+router.get("/getcategories",getAllCategories);
 router.post("/addcategory", upload.single("image"), addCategory);
 router.post("/updatecategory/:id", upload.single("image"), updatecategory);
 router.delete("/deletecategory/:id", deleteCategory);

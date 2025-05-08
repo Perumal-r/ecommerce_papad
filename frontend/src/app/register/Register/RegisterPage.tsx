@@ -8,11 +8,13 @@ import APiClient from "@/api/ApiClient";
 import toast from "react-hot-toast";
 import { FaEye } from "react-icons/fa";
 import { FaEyeSlash } from "react-icons/fa";
+import { AxiosError } from "axios";
 
 interface FormData {
   email: string;
   password: string;
 }
+
 
 const RegisterLoginPage: React.FC = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -39,14 +41,20 @@ const RegisterLoginPage: React.FC = () => {
       } else {
         toast.success("Registration successful!");
       }
-    } catch (error: any) {
-      // 👇 Safely extract backend error message
-      const errorMsg =
-        error?.response?.data?.message ||
-        error?.response?.data?.error || // sometimes it might be under 'error'
-        "Something went wrong. Please try again.";
-
-      toast.error(errorMsg);
+    } catch (error: unknown) {
+      // Narrow down the type to AxiosError
+      if (error instanceof AxiosError) {
+        // 👇 Safely extract backend error message
+        const errorMsg =
+          error?.response?.data?.message ||
+          error?.response?.data?.error || // sometimes it might be under 'error'
+          "Something went wrong. Please try again.";
+    
+        toast.error(errorMsg);
+      } else {
+        // Handle other types of errors
+        toast.error("An unexpected error occurred. Please try again.");
+      }
     }
   };
   const transitionSettings = {

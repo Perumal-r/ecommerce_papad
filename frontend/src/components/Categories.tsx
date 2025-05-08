@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { fetchCategories } from "../redux/slice/categorySlice";
 import { RootState } from "@/redux/store/store";
 import { useSelector, useDispatch } from "react-redux";
@@ -11,12 +11,27 @@ import "keen-slider/keen-slider.min.css";
 import { RiContractLeftLine, RiContractRightLine } from "react-icons/ri";
 import { FaCartShopping } from "react-icons/fa6";
 import Counter from "./counter/counter";
+import { useRouter } from 'next/navigation';
 
 const useAppDispatch = () => useDispatch<AppDispatch>();
 
 export default function Categories() {
+  const [loginId, setLoginId] = useState<string | null>(null);
   const dispatch = useAppDispatch();
   const { categories } = useSelector((state: RootState) => state.category);
+ 
+  const router = useRouter();
+
+  const handleAddToCart = () => {
+    const token = loginId;
+
+    if (!token) {
+      router.push('/register'); // Redirect to login if not logged in
+    } else {
+      // You can also dispatch add-to-cart logic here (Redux or context)
+      router.push('/cart'); // or wherever you want to go
+    }
+  };
 
   const [sliderRef, slider] = useKeenSlider<HTMLDivElement>({
     slides: {
@@ -42,8 +57,10 @@ export default function Categories() {
 
   useEffect(() => {
     dispatch(fetchCategories());
+    const token = localStorage.getItem("token");
+    setLoginId(token);
   }, [dispatch]);
-
+  
   return (
     <section className="p-4 sm:p-6 md:p-8">
       <div className="flex justify-center mb-6 md:mb-8">
@@ -84,7 +101,8 @@ export default function Categories() {
               />
               <h3 className="mt-4 font-bold text-lg">{cat.name}</h3>
               <p className="text-green-600 mb-4">{cat.description}</p>
-              <button className="mt-auto px-4 py-2 flex items-center justify-center bg-green-700 text-white rounded hover:bg-green-600 transition cursor-pointer">
+              <button onClick={handleAddToCart}
+ className="mt-auto px-4 py-2 flex items-center justify-center bg-green-700 text-white rounded hover:bg-green-600 transition cursor-pointer">
                 <FaCartShopping />
                 <span className="ml-2">Add to Cart</span>
               </button>

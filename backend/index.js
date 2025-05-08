@@ -3,10 +3,10 @@ const mongoose = require("mongoose");
 const app = express();
 const PORT = 5000; // You can change the port
 const cors = require("cors");
+const cookieParser = require("cookie-parser");
 const categoryRoutes = require("./routes/categoriesRoutes");
 const userRoutes = require("./routes/registerRoutes");
 const cartRoutes = require("./routes/cartRouter");
-
 // Connect MongoDB
 mongoose
   .connect(
@@ -16,6 +16,7 @@ mongoose
   .catch((err) => console.log("MongoDB connection error:", err));
 
 app.use(cors());
+app.use(cookieParser());
 app.use(express.json());
 
 app.get("/", (req, res) => {

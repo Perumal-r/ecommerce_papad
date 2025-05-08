@@ -1,3 +1,4 @@
+import APiClient from "@/api/ApiClient";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
@@ -24,8 +25,8 @@ const initialState: CategoryState = {
 export const fetchCategories = createAsyncThunk(
   "categories/getcategories",
   async () => {
-    const response = await axios.get(
-      "http://localhost:5000/categories/getcategories"
+    const response = await APiClient.get(
+      "/categories/getcategories"
     );
     return response.data;
   }
@@ -35,8 +36,8 @@ export const fetchCategories = createAsyncThunk(
 export const addCategory = createAsyncThunk(
   "categories/addCategory",
   async (formData: FormData) => {
-    const response = await axios.post(
-      "http://localhost:5000/categories/addCategory",
+    const response = await APiClient.post(
+      "/categories/addCategory",
       formData,
       {
         headers: { "Content-Type": "multipart/form-data" },

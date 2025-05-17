@@ -231,8 +231,8 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 
       <form onSubmit={handleOtpSubmit} className="space-y-4">
         <p className="text-gray-600 mb-4">
-          We've sent a 6-digit OTP to <strong>{formData.email}</strong>
-        </p>
+          We&apos;ve sent a 6-digit OTP to <strong>{formData.email}</strong>
+      </p>
 
         <div>
           <label htmlFor="otp" className="block text-gray-500 mb-1">
@@ -264,7 +264,7 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         </button>
 
         <div className="text-center text-sm text-gray-500 mt-4">
-          Didn't receive OTP?{" "}
+          Didn&apos;t receive OTP?{" "}
           <button
             type="button"
             className="text-green-600 hover:underline"

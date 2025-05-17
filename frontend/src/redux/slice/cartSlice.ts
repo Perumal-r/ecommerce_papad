@@ -1,6 +1,5 @@
 import APiClient from "@/api/ApiClient";
-import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
-import axios from "axios";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 interface CartItem {
   _id: string;
@@ -58,7 +57,7 @@ export const addToCartAPI = createAsyncThunk(
 
 export const updateCartQuantityAPI = createAsyncThunk(
   "cart/updateCartQuantityAPI",
-  async ({ id, quantity }: { id: any; quantity: number }) => {
+  async ({ id, quantity }: { id: string; quantity: number }) => {
     const response = await APiClient.put<CartItem>(`/cart/update/${id}`, {
       quantity,
     });

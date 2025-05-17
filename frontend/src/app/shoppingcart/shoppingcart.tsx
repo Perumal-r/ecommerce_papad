@@ -2,7 +2,7 @@
 
 import { RootState } from "@/redux/store/store";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect} from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { AppDispatch } from "../../redux/store/store";
 import { fetchCart } from "@/redux/slice/cartSlice";
@@ -23,7 +23,7 @@ const ShoppingCartPage = () => {
   useEffect(() => {
     const userId_send = window.localStorage.getItem("user") || "";
     dispatch(fetchCart(userId_send));
-  }, []);
+  }, [dispatch]);
 
   const handlePlaceOrder = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

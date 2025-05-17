@@ -98,7 +98,11 @@ const CategoriesData = () => {
                   setEditCategory(undefined); // clear after closing
                 }}
                 fetchCategories={fetchCategories}
-                editData={editCategory} // send selected item to modal
+                editData={
+                  editCategory
+                    ? { ...editCategory, price: (categories.find(c => c._id === editCategory._id)?.price ?? 0) }
+                    : undefined
+                } // ensure price is included
                 setLoading={setLoading} // pass setLoading to modal
                 loading={loading} // pass loading state to modal
               />
@@ -106,7 +110,6 @@ const CategoriesData = () => {
           </div>
         )}
       </div>
-
       {/*  Table should be structured properly */}
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-8">
         <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">

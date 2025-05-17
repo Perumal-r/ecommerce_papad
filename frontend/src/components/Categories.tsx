@@ -317,7 +317,7 @@ export default function Categories() {
 
               {/* Shipping Message */}
               <div className="text-green-600 text-sm mt-2">
-                Congrats, you're eligible for Free Shipping.
+                Congrats, you&apos;re eligible for Free Shipping.
               </div>
 
               {/* Checkout Button */}

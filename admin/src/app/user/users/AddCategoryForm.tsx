@@ -12,6 +12,7 @@ interface FormProps {
     name: string;
     description: string;
     imageUrl: string;
+    price: number;
   }; // Optional prop for editing
   loading?: boolean; // Optional prop for loading state
   setLoading?: (loading: boolean) => void; // Optional prop for loading state setter
@@ -26,12 +27,14 @@ const AddCategoryForm = ({
 }: FormProps) => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
+  const [price, setPrice]=useState(0);
   const [image, setImage] = useState<File | null>(null);
 
   useEffect(() => {
     if (editData) {
       setName(editData.name);
       setDescription(editData.description);
+      setPrice(editData.price);
       // setImage(editData.imageUrl); // Commented out as imageUrl is a string
     }
   }, [editData]);
@@ -39,7 +42,7 @@ const AddCategoryForm = ({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!name || !description || !image) {
+    if (!name || !description || !price || !image) {
       toast.error("Please fill all fields!", { duration: 1000 });
       return;
     }
@@ -47,6 +50,7 @@ const AddCategoryForm = ({
     const formData = new FormData();
     formData.append("name", name);
     formData.append("description", description);
+    formData.append("price", price.toString());
     formData.append("image", image);
 
     try {
@@ -123,7 +127,19 @@ const AddCategoryForm = ({
             placeholder="Enter description"
           />
         </div>
-
+{/* Price Input */}
+<div className="mt-4">
+  <label className="block text-sm font-medium mb-1">Price</label>
+  <input
+    type="number"
+    min={0}
+    step="0.01"
+    className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+    value={price}
+    onChange={(e) => setPrice(Number(e.target.value))}
+    placeholder="Enter price"
+  />
+</div>
         {/* Image Upload */}
         <div>
           <label className="block text-sm font-medium mb-1">Image</label>

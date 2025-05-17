@@ -6,15 +6,14 @@ import Image from "next/image";
 import loginImage from "../../images/loginpageImage.png";
 import APiClient from "@/api/ApiClient";
 import toast from "react-hot-toast";
-import { FaEye } from "react-icons/fa";
-import { FaEyeSlash } from "react-icons/fa";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { AxiosError } from "axios";
+import { useRouter } from "next/navigation";
 
 interface FormData {
   email: string;
   password: string;
 }
-
 
 const RegisterLoginPage: React.FC = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -23,54 +22,112 @@ const RegisterLoginPage: React.FC = () => {
     email: "",
     password: "",
   });
+  const [showOtpScreen, setShowOtpScreen] = useState(false);
+  const [otp, setOtp] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
+  const router = useRouter();
+
+  // Update form fields
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const endpoint = isLogin ? "/user/login" : "/user/register";
+  // Handle login or register submit
+const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  e.preventDefault();
+  setIsLoading(true);
 
-    try {
-      const response = await APiClient.post(endpoint, formData);
-      if (isLogin) {
-        const token = response.data.token;
-        localStorage.setItem("token", token);
-        toast.success("Login successful!");
+  try {
+    if (isLogin) {
+      // Login flow remains the same
+      const response = await APiClient.post("/user/login", formData);
+      const token = response.data.token;
+      localStorage.setItem("token", token);
+      localStorage.setItem("user", response.data.user.id);
+      toast.success("Login successful!");
+      router.push("/");
+    } else {
+      // Register flow - modified
+      const res = await APiClient.post("/user/send-otp", formData);
+      localStorage.setItem("registerUser", res.data.userId)
+      // More flexible success check
+      if (res.status >= 200 && res.status < 300) {
+
+        toast.success("OTP sent to your email!");
+         
+        // Store the user ID if it's in the response
+        if (res.data.user?.id) {
+          localStorage.setItem("user", res.data.user.id);
+        }
+        setShowOtpScreen(true);
       } else {
-        toast.success("Registration successful!");
-      }
-    } catch (error: unknown) {
-      // Narrow down the type to AxiosError
-      if (error instanceof AxiosError) {
-        // 👇 Safely extract backend error message
-        const errorMsg =
-          error?.response?.data?.message ||
-          error?.response?.data?.error || // sometimes it might be under 'error'
-          "Something went wrong. Please try again.";
-    
-        toast.error(errorMsg);
-      } else {
-        // Handle other types of errors
-        toast.error("An unexpected error occurred. Please try again.");
+        toast.error("Failed to send OTP. Please try again.");
       }
     }
-  };
-  const transitionSettings = {
-    type: "spring",
-    duration: 1.2, // Slower
-    stiffness: 40, // Less springy
-    damping: 18, // More bounce control
-    ease: "easeInOut",
+  } catch (error: unknown) {
+    if (error instanceof AxiosError) {
+      const errorMsg = error.response?.data?.message || 
+                      error.response?.data?.error || 
+                      "Something went wrong.";
+      toast.error(errorMsg);
+    } else {
+      toast.error("An unexpected error occurred.");
+    }
+  } finally {
+    setIsLoading(false);
+  }
+};
+
+  // Handle OTP verification submit
+  const handleOtpSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+
+    try {
+      // Verify OTP - marks user as verified
+      await APiClient.post("/user/verify-otp", {
+        userId: localStorage.getItem("registerUser"),
+        otp,
+      });
+
+      toast.success("OTP verified! Registration complete.");
+
+      // After verification, auto-login user
+      const loginResponse = await APiClient.post("/user/login", formData);
+      const token = loginResponse.data.token;
+      localStorage.setItem("token", token);
+      localStorage.setItem("user", loginResponse.data.user.id);
+      router.push("/");
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        const errorMsg =
+          error.response?.data?.message ||
+          error.response?.data?.error ||
+          "Verification failed";
+        toast.error(errorMsg);
+      } else {
+        toast.error("Unexpected error during verification");
+      }
+    } finally {
+      setIsLoading(false);
+    }
   };
 
+  const transitionSettings = {
+    type: "spring",
+    duration: 0.5,
+    stiffness: 100,
+    damping: 15,
+  };
+
+  // Login/Register form UI
   const FormSection = (
     <motion.div
       key="form"
-      initial={{ x: isLogin ? -200 : 200, opacity: 0 }}
+      initial={{ x: isLogin ? -100 : 100, opacity: 0 }}
       animate={{ x: 0, opacity: 1 }}
-      exit={{ x: isLogin ? 200 : -200, opacity: 0 }}
+      exit={{ x: isLogin ? 100 : -100, opacity: 0 }}
       transition={transitionSettings}
       className="w-full md:w-1/2 p-8 shadow-lg"
     >
@@ -79,85 +136,200 @@ const RegisterLoginPage: React.FC = () => {
       </h2>
 
       <form onSubmit={handleSubmit} className="space-y-4">
-        <label htmlFor="email" className="text-gray-500">Email</label>
-        <input
-          type="email"
-          name="email"
-          placeholder="Enter your email"
-          value={formData.email}
-          onChange={handleChange}
-          className="w-full border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-green-600"
-          required
-        />
-
-        <div className="relative">
-
+        <div>
+          <label htmlFor="email" className="block text-gray-500 mb-1">
+            Email
+          </label>
           <input
-            type={showPassword ? "text" : "password"}
-            name="password"
-            placeholder="Enter your password"
-            value={formData.password}
+            type="email"
+            name="email"
+            placeholder="Enter your email"
+            value={formData.email}
             onChange={handleChange}
-            className="w-full border  border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-green-600"
+            className="w-full border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-green-600"
             required
           />
-          <span
-            onClick={() => setShowPassword(!showPassword)}
-            className="absolute right-3 top-3 text-gray-500 cursor-pointer"
-          >
-            {showPassword ? <FaEye /> : <FaEyeSlash />}
-          </span>
         </div>
+
+        <div>
+          <label htmlFor="password" className="block text-gray-500 mb-1">
+            Password
+          </label>
+          <div className="relative">
+            <input
+              type={showPassword ? "text" : "password"}
+              name="password"
+              placeholder="Enter your password"
+              value={formData.password}
+              onChange={handleChange}
+              className="w-full border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-green-600"
+              required
+              minLength={6}
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-3 top-3 text-gray-500"
+            >
+              {showPassword ? <FaEyeSlash /> : <FaEye />}
+            </button>
+          </div>
+        </div>
+
         {isLogin && (
-          <div className="text-right text-sm text-green-600 hover:underline cursor-pointer">
-            Forgot password?
+          <div className="text-right">
+            <button
+              type="button"
+              className="text-sm text-green-600 hover:underline"
+            >
+              Forgot password?
+            </button>
           </div>
         )}
 
         <button
           type="submit"
-          className="w-full bg-green-700 text-white py-2 rounded hover:bg-green-600 transition cursor-pointer"
+          disabled={isLoading}
+          className={`w-full bg-green-700 text-white py-2 rounded hover:bg-green-600 transition ${
+            isLoading ? "opacity-70 cursor-not-allowed" : "cursor-pointer"
+          }`}
         >
-          {isLogin ? "Login" : "Register"}
+          {isLoading ? "Processing..." : isLogin ? "Login" : "Register"}
         </button>
       </form>
 
       <div className="mt-6 text-center text-sm text-gray-600">
         {isLogin ? "Don't have an account?" : "Already have an account?"}{" "}
-        <span
-          className="text-green-600 cursor-pointer hover:underline"
-          onClick={() => setIsLogin(!isLogin)}
+        <button
+          type="button"
+          className="text-green-600 hover:underline"
+          onClick={() => {
+            setIsLogin(!isLogin);
+            setShowOtpScreen(false);
+            setOtp("");
+            setFormData({ email: "", password: "" });
+          }}
         >
-          {isLogin ? "Signup now" : "Login now"}
-        </span>
+          {isLogin ? "Sign up now" : "Login now"}
+        </button>
       </div>
     </motion.div>
   );
 
+  // OTP verification UI
+  const OtpSection = (
+    <motion.div
+      key="otp"
+      initial={{ opacity: 0, scale: 0.9 }}
+      animate={{ opacity: 1, scale: 1 }}
+      exit={{ opacity: 0, scale: 0.9 }}
+      className="w-full md:w-1/2 p-8 shadow-lg"
+    >
+      <h2 className="text-2xl font-semibold text-center text-gray-800 mb-6">
+        Verify Your Email
+      </h2>
+
+      <form onSubmit={handleOtpSubmit} className="space-y-4">
+        <p className="text-gray-600 mb-4">
+          We've sent a 6-digit OTP to <strong>{formData.email}</strong>
+        </p>
+
+        <div>
+          <label htmlFor="otp" className="block text-gray-500 mb-1">
+            Enter OTP
+          </label>
+          <input
+            type="text"
+            inputMode="numeric"
+            pattern="[0-9]*"
+            maxLength={6}
+            value={otp}
+            onChange={(e) => setOtp(e.target.value.replace(/\D/g, ""))}
+            placeholder="123456"
+            className="w-full border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-green-600"
+            required
+          />
+        </div>
+
+        <button
+          type="submit"
+          disabled={isLoading || otp.length !== 6}
+          className={`w-full bg-green-700 text-white py-2 rounded hover:bg-green-600 transition ${
+            isLoading || otp.length !== 6
+              ? "opacity-70 cursor-not-allowed"
+              : "cursor-pointer"
+          }`}
+        >
+          {isLoading ? "Verifying..." : "Verify & Register"}
+        </button>
+
+        <div className="text-center text-sm text-gray-500 mt-4">
+          Didn't receive OTP?{" "}
+          <button
+            type="button"
+            className="text-green-600 hover:underline"
+            onClick={async () => {
+              try {
+                await APiClient.post("/user/register", {
+                  email: formData.email,
+                  password: formData.password,
+                });
+                toast.success("OTP resent successfully!");
+              } catch {
+                toast.error("Failed to resend OTP");
+              }
+            }}
+          >
+            Resend OTP
+          </button>
+        </div>
+      </form>
+    </motion.div>
+  );
+
+  // Image on the side
   const ImageSection = (
     <motion.div
       key="image"
-      initial={{ x: isLogin ? 200 : -200, opacity: 0 }}
+      initial={{ x: isLogin ? 100 : -100, opacity: 0 }}
       animate={{ x: 0, opacity: 1 }}
-      exit={{ x: isLogin ? -200 : 200, opacity: 0 }}
+      exit={{ x: isLogin ? -100 : 100, opacity: 0 }}
       transition={transitionSettings}
       className="hidden md:flex w-1/2 bg-green-200 text-white items-center justify-center p-8"
     >
       <Image
-        width={1000}
-        height={1000}
+        width={500}
+        height={500}
         src={loginImage}
-        alt="loginregImage"
-        className="w-full h-full object fit"
+        alt="Illustration"
+        className="w-full h-auto object-cover"
       />
     </motion.div>
   );
 
   return (
-    <div className="mt-20 flex items-center justify-center p-4">
-      <div className="flex w-full max-w-4xl bg-white rounded-lg overflow-hidden shadow-lg flex-col md:flex-row relative">
+    <div className="min-h-screen flex items-center justify-center p-4 bg-gray-50">
+      <div className="flex w-full max-w-4xl bg-white rounded-lg overflow-hidden shadow-lg flex-col md:flex-row">
         <AnimatePresence mode="wait">
-          {isLogin ? (
+          {showOtpScreen ? (
+            <>
+              {OtpSection}
+              <motion.div
+                key="otp-image"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="hidden md:flex w-1/2 bg-green-200 items-center justify-center p-8"
+              >
+                <Image
+                  width={500}
+                  height={500}
+                  src={loginImage}
+                  alt="OTP verification"
+                  className="w-full h-auto object-cover"
+                />
+              </motion.div>
+            </>
+          ) : isLogin ? (
             <>
               {FormSection}
               {ImageSection}

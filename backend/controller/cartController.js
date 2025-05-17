@@ -35,7 +35,6 @@ const updateCartItem = async (req, res) => {
       { quantity },
       { new: true }
     );
-
     res.status(200).json({ message: "Cart item updated", cart: updated });
   } catch (err) {
     res
@@ -48,7 +47,6 @@ const updateCartItem = async (req, res) => {
 const deleteCartItem = async (req, res) => {
   try {
     const { cartItemId } = req.params;
-
     await Cart.findByIdAndDelete(cartItemId);
 
     res.status(200).json({ message: "Item removed from cart" });
@@ -63,7 +61,7 @@ const deleteCartItem = async (req, res) => {
 const getUserCart = async (req, res) => {
   try {
     const { userId } = req.params;
-    const cartItems = await Cart.find({ userId }).populate("productId");
+    const cartItems = await Cart.find({ userId }).populate("productId","name imageUrl price");
     res.status(200).json(cartItems);
   } catch (err) {
     res

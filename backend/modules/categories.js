@@ -9,6 +9,10 @@ const categorySchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  price:{
+    type: Number,
+    required: true,
+  },
   imageUrl: {
     type: String,
     required: true,
@@ -19,5 +23,5 @@ const categorySchema = new mongoose.Schema({
   },
 });
 
-const Category = mongoose.model("Category", categorySchema);
+const Category = mongoose.models.categories || mongoose.model("Category", categorySchema);
 module.exports = Category;

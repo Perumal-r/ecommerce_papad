@@ -12,7 +12,7 @@ const getAllCategories = async (req, res) => {
 };
 
 const addCategory = async (req, res) => {
-  const { name, description } = req.body;
+  const { name, description,price } = req.body;
   try {
     if (!req.file) {
       return res.status(400).json({ error: "Image file is required" });
@@ -41,6 +41,7 @@ const addCategory = async (req, res) => {
           const newCategory = new Category({
             name,
             description,
+            price,
             imageUrl: cloudinaryResult.secure_url,
             publicId: cloudinaryResult.public_id,
           });
@@ -65,7 +66,7 @@ const addCategory = async (req, res) => {
 };
 
 const updatecategory = async (req, res) => {
-  const { name, description } = req.body;
+  const { name, description,price } = req.body;
   const categoryId = req.params.id;
 
   try {
@@ -74,7 +75,7 @@ const updatecategory = async (req, res) => {
       return res.status(404).json({ error: "Category not found" });
     }
 
-    let updatedData = { name, description };
+    let updatedData = { name, description,price };
 
     // If a new image is uploaded
     if (req.file) {

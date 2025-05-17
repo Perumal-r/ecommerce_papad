@@ -7,6 +7,7 @@ const cookieParser = require("cookie-parser");
 const categoryRoutes = require("./routes/categoriesRoutes");
 const userRoutes = require("./routes/registerRoutes");
 const cartRoutes = require("./routes/cartRouter");
+const orderRoutes = require("./routes/orderRoutes");
 // Connect MongoDB
 mongoose
   .connect(
@@ -26,6 +27,7 @@ app.get("/", (req, res) => {
 app.use("/categories", categoryRoutes);
 app.use("/user", userRoutes);
 app.use("/cart", cartRoutes);
+app.use("/order", orderRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

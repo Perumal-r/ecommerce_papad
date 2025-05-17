@@ -5,6 +5,7 @@ interface Category {
   _id?: string;
   name: string;
   description: string;
+  price: number;
   imageUrl: string;
 }
 
@@ -46,6 +47,7 @@ const categorySlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
+    
       // fetch
       .addCase(fetchCategories.pending, (state) => {
         state.loading = true;

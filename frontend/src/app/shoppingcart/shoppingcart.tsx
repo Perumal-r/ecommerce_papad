@@ -8,6 +8,7 @@ import { AppDispatch } from "../../redux/store/store";
 import { fetchCart } from "@/redux/slice/cartSlice";
 import APiClient from "@/api/ApiClient";
 import toast from "react-hot-toast";
+import SuccessPage from "../successpage.tsx/success";
 
 const useAppDispatch = () => useDispatch<AppDispatch>();
 
@@ -54,7 +55,8 @@ const ShoppingCartPage = () => {
     const res = await APiClient.post("/order/place-order", orderData);
 
     if (res.status === 200 || res.status === 201) {
-      alert(`Order placed successfully! Order ID: ${res.data.orderId}`);
+      toast.success("Order placed successfully");
+      <SuccessPage />
       window.location.href = `/invoice/${res.data.orderId}`;
     } else {
       toast.error("Failed to place order");

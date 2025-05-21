@@ -74,14 +74,15 @@ const CategoriesData = () => {
           <div className="flex items-center gap-2">
             <span className="text-2xl font-bold text-gray-800">Categories</span>
 
-            <button
-              onClick={() => setIsModalOpen(true)}
-              className="bg-green-700 flex items-center mr-2 text-white px-5 py-1 rounded hover:bg-green-600 cursor-pointer"
-            >
-              <IoMdAdd /> Add
-            </button>
+           
           </div>
-          <div>
+          <div className="flex items-center gap-2">
+             <button
+              onClick={() => setIsModalOpen(true)}
+              className="bg-green-700 flex items-center mr-2 text-white px-5 py-2 rounded hover:bg-green-600 cursor-pointer"
+            >
+              <IoMdAdd /> Add New
+            </button>
             <input
               type="text"
               placeholder="Search..."
@@ -117,6 +118,7 @@ const CategoriesData = () => {
             <tr>
               <th className="px-6 py-3">Name</th>
               <th className="px-6 py-3">Description</th>
+              <th className="px-6 py-3">Price</th>
               <th className="px-6 py-3">Image</th>
               <th className="px-6 py-3 text-right">Actions</th>
             </tr>
@@ -135,6 +137,8 @@ const CategoriesData = () => {
                   {item.name}
                 </th>
                 <td className="px-6 py-4">{item.description}</td>
+                <td className="px-6 py-4">₹{item.price}</td>
+                {/* Image */}
                 <td className="px-6 py-4">
                   <Image
                     src={item.imageUrl}

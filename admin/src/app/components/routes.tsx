@@ -4,7 +4,7 @@ import Link from "next/link";
 import React from "react";
 import adminlogo from "../images/adminpapad.gif";
 import { LuLayoutDashboard } from "react-icons/lu";
-import { FaRegUserCircle } from "react-icons/fa";
+import { FaDatabase } from "react-icons/fa6";
 import { MdOutlineProductionQuantityLimits } from "react-icons/md";
 import { PiSignInBold } from "react-icons/pi";
 import { CiLogout } from "react-icons/ci";
@@ -73,9 +73,9 @@ const Routes = () => {
             </li>
             <li>
               <Link href="/product" className={linkClasses("/product")}>
-                <FaRegUserCircle className="me-2" />
+                <FaDatabase className="me-2"/>
 
-                <span className="ms-3">users</span>
+                <span className="ms-3">Orders</span>
               </Link>
             </li>
             <li>

@@ -49,7 +49,6 @@ export const fetchCart = createAsyncThunk(
 export const addToCartAPI = createAsyncThunk(
   "cart/addToCartAPI",
   async (item: AddToCartPayload) => {
-    console.log("itemss", item);
     const response = await APiClient.post<CartItem>("/cart/add", item);
     return response.data;
   }

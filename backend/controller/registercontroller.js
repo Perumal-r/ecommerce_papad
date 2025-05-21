@@ -552,7 +552,7 @@ const sendOTPEmail = async (email, otp) => {
   });
 
   const mailOptions = {
-    from: '"Your App" <pr657122@gmail.com>',
+    from: '<pr657122@gmail.com>',
     to: email,
     subject: "Your OTP Verification Code",
     html: `

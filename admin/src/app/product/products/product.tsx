@@ -54,7 +54,7 @@ const ProductIndex = () => {
       });
       setStatusMap(statusData);
     } catch (err) {
-      toast.error("Failed to fetch orders");
+      toast.error(err as string);
     }
   };
 
@@ -67,7 +67,7 @@ const ProductIndex = () => {
       toast.success("Order status updated", { duration: 1000 });
       fetchOrders();
     } catch (err) {
-      toast.error("Failed to update status");
+      toast.error(err as string);
     } finally {
       setLoading(false);
     }

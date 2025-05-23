@@ -40,7 +40,6 @@ export default function Hero() {
             className="object-cover"
           />
         </div>
-
         {/* Right Content */}
         <div className="w-1/2 px-10 space-y-4 z-10 ">
           <Image

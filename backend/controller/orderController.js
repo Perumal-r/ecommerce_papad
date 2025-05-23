@@ -38,7 +38,7 @@ const sendInvoiceEmail = async (toEmail, order) => {
 // Place Order
 const placeOrder = async (req, res) => {
   try {
-    const { userId, cartItems, shippingAddress, paymentMode } = req.body;
+    const { userId, cartItems, shippingAddress, paymentMode,createdAt } = req.body;
 
     const totalAmount =
       cartItems.reduce(
@@ -53,6 +53,7 @@ const placeOrder = async (req, res) => {
       shippingAddress,
       paymentMode,
       status: "pending",
+      createdAt,
     });
  await sendInvoiceEmail(shippingAddress.email, order);
     res.status(201).json({ success: true, orderId: order._id, order });
@@ -64,7 +65,7 @@ const placeOrder = async (req, res) => {
 //update order
 const updateOrderStatus = async (req, res) => {
   try {
-    const { status } = req.body;
+    const { status,createdAt } = req.body;
 
     // Validate status
     if (!["pending", "completed", "cancelled"].includes(status)) {
@@ -73,7 +74,7 @@ const updateOrderStatus = async (req, res) => {
 
     const order = await Order.findByIdAndUpdate(
       req.params.id,
-      { status },
+      { status,createdAt},
       { new: true }
     );
 
@@ -112,10 +113,50 @@ const getAllOrders = async (req, res) => {
   }
 };
 
+//filter order by date
+
+// GET /api/orders/product-sales?date=2025-05-17&productId=6810ae674f74ada5441118fa
+
+const getProductSalesByDate = async (req, res) => {
+  try {
+    const { date, productId } = req.query;
+    if (!date || !productId) {
+      return res.status(400).json({ message: "date and productId are required" });
+    }
+
+    // start and end of the day in UTC
+    const startDate = new Date(date + "T00:00:00.000Z");
+    const endDate = new Date(date + "T23:59:59.999Z");
+
+    // Fetch orders for that day that contain the productId
+    const orders = await Order.find({
+      createdAt: { $gte: startDate, $lte: endDate },
+      "products.productId": productId,
+    }).populate("products.productId");
+
+    // Sum quantity * price for that product in all orders
+    let totalSalesAmount = 0;
+
+    orders.forEach((order) => {
+      order.products.forEach((item) => {
+        if (item.productId._id.toString() === productId) {
+          totalSalesAmount += item.productId.price * item.quantity;
+        }
+      });
+    });
+
+    res.json({ date, productId, totalSalesAmount });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+
 module.exports = {
   placeOrder,
   getOrderById,
   sendInvoiceEmail,
   updateOrderStatus,
-  getAllOrders
+  getAllOrders,
+  getProductSalesByDate
 };

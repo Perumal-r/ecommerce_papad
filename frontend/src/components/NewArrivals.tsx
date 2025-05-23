@@ -1,46 +1,57 @@
 import Image from "next/image";
+import ceo_image from "../app/images/ceo_image.png"
+import manager_image from "../app/images/manger_image.png"
+import developer_image from "../app/images/developer_image.png"
 
+// components/NewArrivals.tsx
 export default function NewArrivals() {
-  const products = [
+  const teamMembers = [
     {
-      name: "Orange Juice",
-      price: "$24.99",
-      img: "https://img.freepik.com/free-photo/orange-juice_144627-28495.jpg?w=740",
+      name: "RAMU N",
+      role: "Founder & CEO",
+      image: ceo_image, // replace with actual image path
     },
     {
-      name: "Fresh Meat",
-      price: "$122.00",
-      img: "https://img.freepik.com/free-photo/raw-meat-with-rosemary_144627-8648.jpg?w=740",
+      name: "RANJITH PANDI",
+      role: "Manager & CTO",
+      image: manager_image,
     },
     {
-      name: "Strawberries",
-      price: "$2600.00",
-      img: "https://img.freepik.com/free-photo/fresh-strawberries_144627-28506.jpg?w=740",
-    },
-    {
-      name: "Apple",
-      price: "$602.00",
-      img: "https://img.freepik.com/free-photo/apple_144627-28486.jpg?w=740",
+      name: "PERUMAL R",
+      role: "DEVELOPER & DESIGNER",
+      image: developer_image,
     },
   ];
+
   return (
-    <section className="p-8">
-      <h2 className="text-center text-3xl font-bold mb-8">New Arrivals</h2>
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-        {products.map((product) => (
-          <div
-            key={product.name}
-            className="bg-white p-4 rounded-lg shadow hover:shadow-lg"
-          >
-            <Image
-              width={100}
-              height={100}
-              src={product.img}
-              alt={product.name}
-              className="h-40 w-full object-cover rounded"
-            />
-            <h3 className="mt-4 font-bold">{product.name}</h3>
-            <p className="text-green-600">{product.price}</p>
+    <section className="py-16 bg-white text-center">
+      <h2 className="text-2xl md:text-4xl font-semibold text-gray-800 mb-4">
+        OUR PASSIONATE TEAM MEMBER
+      </h2>
+      <p className="max-w-2xl mx-auto text-gray-600 mb-12">
+        Our essential member of our team with strong expertise in
+        technology and project management. He consistently works with dedication
+        and collaboration, contributing effectively to the team&apos;s success. His
+        enthusiasm and cooperative nature make him a valuable asset to any
+        project.
+      </p>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10 max-w-5xl mx-auto">
+        {teamMembers.map((member, index) => (
+          <div key={index} className="flex flex-col items-center">
+            <div className="w-32 h-32 rounded-full border-2 border-green-400 overflow-hidden mb-4">
+              <Image
+                width={500}
+                height={500}
+                src={member.image}
+                alt={member.name}
+                className="w-full h-full object-cover"
+              />
+            </div>
+            <h3 className="text-lg font-semibold text-gray-800">
+              {member.name}
+            </h3>
+            <p className="text-sm text-gray-500">{member.role}</p>
           </div>
         ))}
       </div>

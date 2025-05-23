@@ -6,6 +6,7 @@ import images from "../app/images/heropage.jpg";
 import { MdKeyboardDoubleArrowRight } from "react-icons/md";
 
 export default function HeroBanner() {
+  
   const handleShopNowClick = () => {
     const target = document.getElementById("categories-section");
     if (target) {

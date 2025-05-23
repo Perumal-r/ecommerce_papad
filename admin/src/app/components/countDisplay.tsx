@@ -1,10 +1,15 @@
+'use client'
+
 import React from "react";
 import { IoPerson } from "react-icons/io5";
 import { GrUserWorker } from "react-icons/gr";
 import { HiBuildingOffice2 } from "react-icons/hi2";
 import { MdOutlineProductionQuantityLimits } from "react-icons/md";
+import { useOrderContext } from "./context/orderContext";
 
 const CountDisplay = () => {
+const { orderStatus, orderDisplay } = useOrderContext();
+
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 px-0 py-4 text-white">
       {/* Customers */}
@@ -30,15 +35,15 @@ const CountDisplay = () => {
             <GrUserWorker />
           </div>
           <div>
-            <h2 className="text-2xl font-bold text-black">4</h2>
+            <h2 className="text-2xl font-bold text-black">6</h2>
             <p className="text-sm text-black">Employees</p>
             <p className="text-xs text-black">
-              <strong>4</strong> Active Employees
+              <strong>6</strong> Active Employees
             </p>
           </div>
         </div>
       </div>
-
+      
       {/* Departments */}
       <div className="border border-green-400 rounded-xl p-4 shadow-lg bg-white">
         <div className="flex items-center gap-4">
@@ -46,10 +51,10 @@ const CountDisplay = () => {
             <HiBuildingOffice2 />
           </div>
           <div>
-            <h2 className="text-2xl font-bold text-black">3</h2>
+            <h2 className="text-2xl font-bold text-black">4</h2>
             <p className="text-sm text-black">Departments</p>
             <p className="text-xs text-black">
-              <strong>3</strong> Total Departments
+              <strong>4</strong> Total Departments
             </p>
           </div>
         </div>
@@ -62,10 +67,10 @@ const CountDisplay = () => {
             <MdOutlineProductionQuantityLimits />
           </div>
           <div>
-            <h2 className="text-2xl font-bold text-black">6</h2>
+            <h2 className="text-2xl font-bold text-black">{orderDisplay}</h2>
             <p className="text-sm text-black">Product Counts</p>
             <p className="text-xs text-black">
-              <strong>6</strong> Total Product Count
+              <strong>{orderStatus.filter((item)=>item.status==="pending").length}</strong> Total Pending Count
             </p>
           </div>
         </div>

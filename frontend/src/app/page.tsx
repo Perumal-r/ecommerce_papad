@@ -2,6 +2,8 @@ import Hero from "../components/Hero";
 import Features from "../components/Feature";
 import NewArrivals from "../components/NewArrivals";
 import Categories from "../components/Categories";
+import HowItWorks from "@/components/HowItWorks";
+import Contact from "./contact/page";
 
 export default function Home() {
   return (
@@ -10,8 +12,11 @@ export default function Home() {
       <div id="categories-section">
         <Categories />
       </div>
+      <HowItWorks />
+
       <Features />
       <NewArrivals />
+      <Contact />
     </>
   );
 }

@@ -62,7 +62,6 @@ const cartCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
     <IoLogOut />
   </button>
 </div>
-
     </nav>
   );
 }

@@ -2,10 +2,12 @@ import CountDisplay from "./components/countDisplay";
 import OrderRateChart from "./components/OrderRateChart";
 import PerformanceDonut from "./components/PopularFoodChart";
 import IncomeWidget from "./components/Incomwidget";
+import { OrderProvider } from "./components/context/orderContext";
 
 export default function Sidebar() {
   return (
     <>
+    <OrderProvider>
       <div className="p-4 sm:ml-60">
         <div className=" rounded-lg dark:border-gray-700">
           {/* Count cards */}
@@ -24,6 +26,7 @@ export default function Sidebar() {
           </div>
         </div>
       </div>
+      </OrderProvider>
     </>
   );
 }

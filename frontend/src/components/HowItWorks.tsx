@@ -17,7 +17,7 @@ const HowItWorks = () => {
             </div>
             <h3 className="text-2xl font-semibold mb-4 text-gray-800">Choose Your Favorite</h3>
             <p className="text-gray-600">
-              Choose your favorite papad and order online or by website. It's easy to customize your order.
+              Choose your favorite papad and order online or by website. It&apos;s easy to customize your order.
             </p>
           </div>
           

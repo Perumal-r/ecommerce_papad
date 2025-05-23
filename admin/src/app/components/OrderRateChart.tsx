@@ -27,7 +27,6 @@ export default function OrderRateChart() {
   const [loading, setLoading] = useState(false);
   const [selectedProductId, setSelectedProductId] = useState("");
   const [categoriesList, setCategoriesList] = useState<Product[]>([]);
-  const [displayAmount, setDisplayAmount] = useState<Order[]>([]);
   const [date, setDate] = useState<string>(
     new Date().toISOString().slice(0, 10)
   );
@@ -50,7 +49,6 @@ export default function OrderRateChart() {
       const res = await APiClient.get(
         `/order/orders-by-date?date=${date}&productId=${selectedProductId}`
       );
-      setDisplayAmount(res.data);
     } catch (err) {
       toast.error(err as string);
     } finally {
@@ -105,6 +103,8 @@ export default function OrderRateChart() {
   });
 
   return (
+    <>
+    {loading && <p>Loading...</p>}
     <div className="bg-white p-4 rounded shadow border-1 border-gray-200 w-full">
       <div className="grid grid-cols-2 gap-4 mb-4">
         <input
@@ -132,5 +132,6 @@ export default function OrderRateChart() {
         height={300}
       />
     </div>
+    </>
   );
 }

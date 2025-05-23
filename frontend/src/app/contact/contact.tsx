@@ -4,7 +4,7 @@ export default function ContactSection() {
   return (
     <section className=" text-gray-800 py-12 px-4">
       <div className="max-w-7xl mx-auto text-center">
-        <h2 className="text-2xl md:text-3xl font-bold mb-10">LET'S CONNECT</h2>
+        <h2 className="text-2xl md:text-3xl font-bold mb-10">LET&apos;S CONNECT</h2>
 
         {/* Top Info */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">

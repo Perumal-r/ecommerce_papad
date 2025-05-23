@@ -3,7 +3,7 @@
 import { useOrderContext } from "./context/orderContext";
 
 const IncomeWidget = () => {
-  const { orderStatus, orderDisplay } = useOrderContext();
+  const { orderStatus } = useOrderContext();
   const grandTotal = orderStatus.reduce((sum, order) => sum + order.totalAmount, 0);
 
   return (

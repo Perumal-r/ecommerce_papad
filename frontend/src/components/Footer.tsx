@@ -3,6 +3,7 @@ import { FaFacebook } from "react-icons/fa";
 import { FaSquareInstagram } from "react-icons/fa6";
 import { IoLogoWhatsapp } from "react-icons/io";
 import logoIcon from "../app/images/papad.gif";
+import Link from "next/link";
 
 export default function Footer() {
   return (
@@ -23,19 +24,19 @@ export default function Footer() {
           <h4 className="font-semibold text-black mb-2 ">SPP Papad</h4>
           <ul className="space-y-1 text-black">
             <li>
-              <a href="/" className="hover:text-black">
+              <Link href="/" className="hover:text-black">
                 Home
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="/about" className="hover:text-black">
+              <Link href="/about" className="hover:text-black">
                 About
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="/contact" className="hover:text-black">
+              <Link href="/contact" className="hover:text-black">
                 Contact
-              </a>
+              </Link>
             </li>
           </ul>
         </div>
@@ -56,14 +57,14 @@ export default function Footer() {
           <ul className="space-y-1 text-black">
             <li>
               {" "}
-              <a href="/privacy_policy" className="hover:underline">
+              <Link href="/privacy_policy" className="hover:underline">
                 Privacy Policy
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="/terms_conditions" className="hover:underline">
+              <Link href="/terms_conditions" className="hover:underline">
                 Terms & Conditions
-              </a>
+              </Link>
             </li>
           </ul>
         </div>

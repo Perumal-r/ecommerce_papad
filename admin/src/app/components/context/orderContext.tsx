@@ -5,7 +5,15 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
 
-type Order = { status: string; [key: string]: any };
+type Order = {
+  _id: string;
+  status: string;
+  user: string;
+  items: { productId: string; quantity: number }[];
+  totalAmount: number;
+  createdAt: string;
+  updatedAt: string;
+};
 
 interface OrderContextType {
   loading: boolean;

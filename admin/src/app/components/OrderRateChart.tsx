@@ -13,16 +13,6 @@ interface Product {
   name: string;
 }
 
-interface OrderProduct {
-  productId: Product;
-  // Add other fields if needed
-}
-
-interface Order {
-  products: OrderProduct[];
-  // Add other fields if needed
-}
-
 export default function OrderRateChart() {
   const [loading, setLoading] = useState(false);
   const [selectedProductId, setSelectedProductId] = useState("");
@@ -46,7 +36,7 @@ export default function OrderRateChart() {
   const fetchProductCountprice = async () => {
     setLoading(true);
     try {
-      const res = await APiClient.get(
+     await APiClient.get(
         `/order/orders-by-date?date=${date}&productId=${selectedProductId}`
       );
     } catch (err) {
@@ -58,13 +48,13 @@ export default function OrderRateChart() {
 
   useEffect(() => {
     fetcchCategoriesData();
-    //eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     if (selectedProductId) {
       fetchProductCountprice();
     }
+      //eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedProductId]);
 
   const [chartData] = useState<ApexCharts.ApexOptions>({

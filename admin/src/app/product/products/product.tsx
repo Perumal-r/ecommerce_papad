@@ -96,6 +96,7 @@ const ProductIndex = () => {
 
   useEffect(() => {
     handleFilter();
+  //eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchOrderId, searchName, searchStatus, orders]);
 
   if (!orders.length) return <p className="p-4">Loading...</p>;

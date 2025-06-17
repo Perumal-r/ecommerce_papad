@@ -43,7 +43,7 @@ const OrderDisplay = () => {
 
   return (
     <div className="p-4 space-y-6">
-      {orderDetailsData.map((order: any) => {
+      {orderDetailsData.map((order) => {
         const currentStatus = order.status;
 
         return (

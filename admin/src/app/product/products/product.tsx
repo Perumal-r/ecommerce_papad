@@ -89,14 +89,13 @@ const ProductIndex = () => {
     setFilteredOrders(filtered);
   };
 
-  
   useEffect(() => {
     fetchOrders();
   }, []);
 
   useEffect(() => {
     handleFilter();
-  //eslint-disable-next-line react-hooks/exhaustive-deps
+    //eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchOrderId, searchName, searchStatus, orders]);
 
   if (!orders.length) return <p className="p-4">Loading...</p>;
@@ -128,6 +127,7 @@ const ProductIndex = () => {
         >
           <option value="">All Status</option>
           <option value="pending">Pending</option>
+          <option value="shipping">Shipping</option>
           <option value="completed">Completed</option>
           <option value="cancelled">Cancelled</option>
         </select>
@@ -196,19 +196,22 @@ const ProductIndex = () => {
                       }
                     >
                       <option value="pending">Pending</option>
+                      <option value="shipping">Shipping</option>
                       <option value="completed">Completed</option>
                       <option value="cancelled">Cancelled</option>
                     </select>
                   ) : (
                     <span
                       className={`capitalize font-semibold px-2 py-1 rounded
-                      ${
-                        order.status === "completed"
-                          ? "text-green-600 bg-green-100"
-                          : order.status === "pending"
-                          ? "text-blue-600 bg-blue-100"
-                          : "text-red-600 bg-red-100"
-                      }`}
+    ${
+      order.status === "completed"
+        ? "text-green-600 bg-green-100"
+        : order.status === "pending"
+        ? "text-yellow-700 bg-yellow-100"
+        : order.status === "shipping"
+        ? "text-blue-600 bg-blue-100"
+        : "text-red-600 bg-red-100"
+    }`}
                     >
                       {order.status}
                     </span>

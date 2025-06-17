@@ -3,7 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import "keen-slider/keen-slider.min.css";
 import ReduxProvider from "@/app/ReduxProvider";
-import ClientLayout from "./clientLayout"; // 👈 use the client wrapper
+import ClientLayout from "./clientLayout";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",

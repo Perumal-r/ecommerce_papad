@@ -2,18 +2,20 @@
 
 import { RootState } from "@/redux/store/store";
 import Image from "next/image";
-import { useEffect} from "react";
+import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { AppDispatch } from "../../redux/store/store";
 import { fetchCart } from "@/redux/slice/cartSlice";
 import APiClient from "@/api/ApiClient";
 import toast from "react-hot-toast";
 import SuccessPage from "../successpage.tsx/success";
+import { useRouter } from "next/router";
 
 const useAppDispatch = () => useDispatch<AppDispatch>();
 
 const ShoppingCartPage = () => {
   const dispatch = useAppDispatch();
+  const router = useRouter();
 
   const { items: cartItems } = useSelector((state: RootState) => state.cart);
   const subtotal = cartItems.reduce(
@@ -56,8 +58,8 @@ const ShoppingCartPage = () => {
 
     if (res.status === 200 || res.status === 201) {
       toast.success("Order placed successfully");
-      <SuccessPage />
-      window.location.href = `/invoice/${res.data.orderId}`;
+      <SuccessPage />;
+      router.push(`/invoice/${res.data.orderId}`);
     } else {
       toast.error("Failed to place order");
     }
@@ -70,7 +72,10 @@ const ShoppingCartPage = () => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         {/* Left: Shipping Form */}
         <div className="md:col-span-2">
-          <h4 className="text-lg mb-4 font-bold border-b" style={{ color: "gray" }}>
+          <h4
+            className="text-lg mb-4 font-bold border-b"
+            style={{ color: "gray" }}
+          >
             SHIPPING DETAILS
           </h4>
           <form className="space-y-4" onSubmit={handlePlaceOrder}>
@@ -119,7 +124,9 @@ const ShoppingCartPage = () => {
 
         {/* Right: Order Summary */}
         <div className="bg-gray-50 p-6 rounded-lg">
-          <h2 className="text-lg font-semibold mb-4 border-b pb-2">ORDER SUMMARY</h2>
+          <h2 className="text-lg font-semibold mb-4 border-b pb-2">
+            ORDER SUMMARY
+          </h2>
           {cartItems.map((item) => (
             <div key={item._id} className="flex items-center mb-4">
               <Image
@@ -138,7 +145,9 @@ const ShoppingCartPage = () => {
                     {item?.productId?.name}
                   </div>
                 </div>
-                <p className="text-sm text-gray-600 text-center">{item.quantity}</p>
+                <p className="text-sm text-gray-600 text-center">
+                  {item.quantity}
+                </p>
                 <p className="text-sm text-gray-600 text-right">
                   ₹{item.productId.price.toFixed(2)}
                 </p>

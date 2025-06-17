@@ -7,13 +7,13 @@ const sendInvoiceEmail = async (toEmail, order) => {
   const transporter = nodemailer.createTransport({
     service: "gmail", // or use 'smtp.ethereal.email' for testing
     auth: {
-      user: "pr657122@gmail.com",       // ✅ Replace with your email
-      pass: "ylgs qsyf oolw eimv",        // ✅ Use App Password (not your login)
+      user: "pr657122@gmail.com", // ✅ Replace with your email
+      pass: "ylgs qsyf oolw eimv", // ✅ Use App Password (not your login)
     },
   });
 
   const mailOptions = {
-    from: '<pr657122@gmail.com>',
+    from: "<pr657122@gmail.com>",
     to: toEmail,
     subject: "Your Order Invoice",
     html: `
@@ -24,9 +24,15 @@ const sendInvoiceEmail = async (toEmail, order) => {
       <p><strong>Shipping Email:</strong> ${order.shippingAddress.email}</p>
       <p><strong>Items:</strong></p>
       <ul>
-        ${order.products.map(item => `
-          <li>${item.productId.name} x ${item.quantity} = ₹${item.productId.price * item.quantity}</li>
-        `).join("")}
+        ${order.products
+          .map(
+            (item) => `
+          <li>${item.productId.name} x ${item.quantity} = ₹${
+              item.productId.price * item.quantity
+            }</li>
+        `
+          )
+          .join("")}
       </ul>
       <p><strong>Shipping:</strong> ₹50</p>
     `,
@@ -38,7 +44,8 @@ const sendInvoiceEmail = async (toEmail, order) => {
 // Place Order
 const placeOrder = async (req, res) => {
   try {
-    const { userId, cartItems, shippingAddress, paymentMode,createdAt } = req.body;
+    const { userId, cartItems, shippingAddress, paymentMode, createdAt } =
+      req.body;
 
     const totalAmount =
       cartItems.reduce(
@@ -55,7 +62,7 @@ const placeOrder = async (req, res) => {
       status: "pending",
       createdAt,
     });
- await sendInvoiceEmail(shippingAddress.email, order);
+    await sendInvoiceEmail(shippingAddress.email, order);
     res.status(201).json({ success: true, orderId: order._id, order });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
@@ -65,16 +72,16 @@ const placeOrder = async (req, res) => {
 //update order
 const updateOrderStatus = async (req, res) => {
   try {
-    const { status,createdAt } = req.body;
+    const { status, createdAt } = req.body;
 
     // Validate status
-    if (!["pending", "completed", "cancelled"].includes(status)) {
+    if (!["pending", "shipping", "completed", "cancelled"].includes(status)) {
       return res.status(400).json({ message: "Invalid status value" });
     }
 
     const order = await Order.findByIdAndUpdate(
       req.params.id,
-      { status,createdAt},
+      { status, createdAt },
       { new: true }
     );
 
@@ -88,12 +95,18 @@ const updateOrderStatus = async (req, res) => {
   }
 };
 
-// Get Single Order
 const getOrderById = async (req, res) => {
   try {
-    const order = await Order.findById(req.params.id).populate("products.productId");
-    if (!order) return res.status(404).json({ message: "Order not found" });
-    res.json(order);
+    const userId = req.params.id; // From logged in user
+
+    // Fetch all orders by user ID
+    const orders = await Order.find({ userId });
+
+    if (!orders || orders.length === 0) {
+      return res.status(404).json({ message: "No orders found for this user" });
+    }
+
+    res.json(orders);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -103,9 +116,9 @@ const getOrderById = async (req, res) => {
 
 const getAllOrders = async (req, res) => {
   try {
-    const orders = await Order.find()
-      .populate("products.productId") // populate product details
-      .sort({ createdAt: -1 });       // most recent orders first
+    const orders = await Order.find();
+    // .populate("products.productId") // populate product details
+    // .sort({ createdAt: -1 });       // most recent orders first
 
     res.json(orders);
   } catch (err) {
@@ -121,7 +134,9 @@ const getProductSalesByDate = async (req, res) => {
   try {
     const { date, productId } = req.query;
     if (!date || !productId) {
-      return res.status(400).json({ message: "date and productId are required" });
+      return res
+        .status(400)
+        .json({ message: "date and productId are required" });
     }
 
     // start and end of the day in UTC
@@ -151,12 +166,11 @@ const getProductSalesByDate = async (req, res) => {
   }
 };
 
-
 module.exports = {
   placeOrder,
   getOrderById,
   sendInvoiceEmail,
   updateOrderStatus,
   getAllOrders,
-  getProductSalesByDate
+  getProductSalesByDate,
 };

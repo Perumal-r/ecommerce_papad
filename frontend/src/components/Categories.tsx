@@ -1,30 +1,30 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { fetchCategories } from "../redux/slice/categorySlice";
 import {
-  fetchCart,
   addToCartAPI,
-  updateCartQuantityAPI,
+  fetchCart,
   removeFromCartAPI,
+  updateCartQuantityAPI,
 } from "@/redux/slice/cartSlice";
+import { closeDrawer, openDrawer } from "@/redux/slice/drawerSlice";
 import { RootState } from "@/redux/store/store";
-import { useSelector, useDispatch } from "react-redux";
-import { AppDispatch } from "../redux/store/store";
-import Image from "next/image";
-import { useKeenSlider } from "keen-slider/react";
 import "keen-slider/keen-slider.min.css";
-import { RiContractLeftLine, RiContractRightLine } from "react-icons/ri";
-import { FaCartShopping } from "react-icons/fa6";
-import { MdDelete } from "react-icons/md";
-import { IoMdAdd } from "react-icons/io";
-import { FiMinus } from "react-icons/fi";
-import { IoClose } from "react-icons/io5";
-import Counter from "./counter/counter";
-import { useRouter } from "next/navigation";
-import { openDrawer, closeDrawer } from "@/redux/slice/drawerSlice";
-import emptyCard from "../app/images/empty_card.jpg"
+import { useKeenSlider } from "keen-slider/react";
+import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { FaCartShopping } from "react-icons/fa6";
+import { FiMinus } from "react-icons/fi";
+import { IoMdAdd } from "react-icons/io";
+import { IoClose } from "react-icons/io5";
+import { MdDelete } from "react-icons/md";
+import { RiContractLeftLine, RiContractRightLine } from "react-icons/ri";
+import { useDispatch, useSelector } from "react-redux";
+import emptyCard from "../app/images/empty_card.jpg";
+import { fetchCategories } from "../redux/slice/categorySlice";
+import { AppDispatch } from "../redux/store/store";
+import Counter from "./counter/counter";
 
 type CartItem = {
   userId: string;

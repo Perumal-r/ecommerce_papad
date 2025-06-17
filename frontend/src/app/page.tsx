@@ -8,15 +8,20 @@ import Contact from "./contact/page";
 export default function Home() {
   return (
     <>
-      <Hero />
+      <div id="hero-section">
+        <Hero />
+      </div>
       <div id="categories-section">
         <Categories />
       </div>
-      <HowItWorks />
-
+      <div id="how-it-works-section">
+        <HowItWorks />
+      </div>
       <Features />
       <NewArrivals />
-      <Contact />
+      <div id="contact-section">
+        <Contact />
+      </div>
     </>
   );
 }

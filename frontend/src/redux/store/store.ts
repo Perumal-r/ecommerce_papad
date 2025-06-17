@@ -1,15 +1,17 @@
 import { configureStore } from "@reduxjs/toolkit";
 import categoryReducer from "../slice/categorySlice";
 import cartReducer from "../slice/cartSlice";
-import orderReducer from "../slice/orderSlice"
+import orderReducer from "../slice/orderSlice";
 import drawerReducer from "../slice/drawerSlice";
+import viewOrderDrawerReducer from "../slice/vieworderdrawerSlice";
 
 export const store = configureStore({
   reducer: {
-    category: categoryReducer, // <-- here
-    cart: cartReducer, // <-- here
+    category: categoryReducer,
+    cart: cartReducer,
     order: orderReducer,
-    drawer: drawerReducer, // <-- here
+    drawer: drawerReducer,
+    viewOrderDrawer: viewOrderDrawerReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

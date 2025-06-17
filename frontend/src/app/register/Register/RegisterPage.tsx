@@ -352,8 +352,6 @@
 
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import Image from "next/image";
-import loginImage from "../../images/loginpageImage.png";
 import APiClient from "@/api/ApiClient";
 import toast from "react-hot-toast";
 import { FaEye, FaEyeSlash } from "react-icons/fa";

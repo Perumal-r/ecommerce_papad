@@ -1,8 +1,16 @@
 import APiClient from "@/api/ApiClient";
 import React, { useEffect, useState } from "react";
 
+interface OrderDetails {
+  _id: string;
+  createdAt: string;
+  totalAmount: number;
+  status: "pending" | "shipping" | "completed" | "cancelled";
+  // Add other fields as needed based on your API response
+}
+
 const OrderDisplay = () => {
-  const [orderDetailsData, setOrderDetailsData] = useState<any>([]);
+  const [orderDetailsData, setOrderDetailsData] = useState<OrderDetails[]>([]);
 
   const orderGet = async () => {
     const userId = localStorage.getItem("user");
@@ -18,7 +26,15 @@ const OrderDisplay = () => {
   }, []);
 
   const steps = ["pending", "shipping", "completed", "cancelled"];
-  const statusColors: any = {
+
+  type ColorCode = {
+    pending: string;
+    shipping: string;
+    completed: string;
+    cancelled: string;
+  };
+
+  const statusColors: ColorCode = {
     pending: "bg-gray-400",
     shipping: "bg-yellow-400",
     completed: "bg-green-500",
@@ -47,7 +63,7 @@ const OrderDisplay = () => {
                 const nextIsActive = index + 1 <= steps.indexOf(currentStatus);
 
                 const circleColor = isActive
-                  ? statusColors[step]
+                  ? statusColors[step as keyof ColorCode]
                   : "bg-gray-200";
                 const textColor = isActive
                   ? "text-black font-semibold"
@@ -64,7 +80,7 @@ const OrderDisplay = () => {
                         <div
                           className={`h-1 ${
                             nextIsActive
-                              ? statusColors[steps[index + 1]]
+                              ? statusColors[steps[index + 1] as keyof ColorCode]
                               : "bg-gray-200"
                           } w-full`}
                         ></div>

@@ -9,7 +9,7 @@ import { fetchCart } from "@/redux/slice/cartSlice";
 import APiClient from "@/api/ApiClient";
 import toast from "react-hot-toast";
 import SuccessPage from "../successpage.tsx/success";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 const useAppDispatch = () => useDispatch<AppDispatch>();
 
@@ -22,14 +22,16 @@ const ShoppingCartPage = () => {
     (sum, item) => sum + item?.productId?.price * item?.quantity,
     0
   );
-
   useEffect(() => {
-    const userId_send = window.localStorage.getItem("user") || "";
-    dispatch(fetchCart(userId_send));
+    if (typeof window !== 'undefined') {
+      const userId_send = window.localStorage.getItem("user") || "";
+      dispatch(fetchCart(userId_send));
+    }
   }, [dispatch]);
-
   const handlePlaceOrder = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (typeof window === 'undefined') return;
 
     const userId = localStorage.getItem("user");
 

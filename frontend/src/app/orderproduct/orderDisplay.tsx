@@ -95,7 +95,7 @@ const OrderDisplay = () => {
         />
         <h2 className="text-xl font-semibold text-gray-700">No Orders Found</h2>
         <p className="text-gray-500">
-          Looks like you haven't placed any orders yet.
+          Looks like you haven&apos;t placed any orders yet.
         </p>
         <button
           onClick={() => router.push("/")}

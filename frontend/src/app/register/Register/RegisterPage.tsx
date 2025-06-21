@@ -43,14 +43,14 @@
 //       // Login flow remains the same
 //       const response = await APiClient.post("/user/login", formData);
 //       const token = response.data.token;
-//       localStorage.setItem("token", token);
-//       localStorage.setItem("user", response.data.user.id);
+//       sessionStorage.setItem("token", token);
+//       sessionStorage.setItem("user", response.data.user.id);
 //       toast.success("Login successful!");
 //       router.push("/");
 //     } else {
 //       // Register flow - modified
 //       const res = await APiClient.post("/user/send-otp", formData);
-//       localStorage.setItem("registerUser", res.data.userId)
+//       sessionStorage.setItem("registerUser", res.data.userId)
 //       // More flexible success check
 //       if (res.status >= 200 && res.status < 300) {
 
@@ -58,7 +58,7 @@
 
 //         // Store the user ID if it's in the response
 //         if (res.data.user?.id) {
-//           localStorage.setItem("user", res.data.user.id);
+//           sessionStorage.setItem("user", res.data.user.id);
 //         }
 //         setShowOtpScreen(true);
 //       } else {
@@ -87,7 +87,7 @@
 //     try {
 //       // Verify OTP - marks user as verified
 //       await APiClient.post("/user/verify-otp", {
-//         userId: localStorage.getItem("registerUser"),
+//         userId: sessionStorage.getItem("registerUser"),
 //         otp,
 //       });
 
@@ -96,8 +96,8 @@
 //       // After verification, auto-login user
 //       const loginResponse = await APiClient.post("/user/login", formData);
 //       const token = loginResponse.data.token;
-//       localStorage.setItem("token", token);
-//       localStorage.setItem("user", loginResponse.data.user.id);
+//       sessionStorage.setItem("token", token);
+//       sessionStorage.setItem("user", loginResponse.data.user.id);
 //       router.push("/");
 //     } catch (error) {
 //       if (error instanceof AxiosError) {
@@ -391,18 +391,18 @@ const RegisterLoginPage: React.FC = () => {
       if (isLogin) {
         const response = await APiClient.post("/user/login", formData);
         const token = response.data.token;
-        localStorage.setItem("token", token);
-        localStorage.setItem("user", response.data.user.id);
+        sessionStorage.setItem("token", token);
+        sessionStorage.setItem("user", response.data.user.id);
         toast.success("Login successful!");
         router.push("/");
       } else {
         const res = await APiClient.post("/user/send-otp", formData);
-        localStorage.setItem("registerUser", res.data.userId);
+        sessionStorage.setItem("registerUser", res.data.userId);
 
         if (res.status >= 200 && res.status < 300) {
           toast.success("OTP sent to your email!");
           if (res.data.user?.id) {
-            localStorage.setItem("user", res.data.user.id);
+            sessionStorage.setItem("user", res.data.user.id);
           }
           setShowOtpScreen(true);
         } else {
@@ -430,7 +430,7 @@ const RegisterLoginPage: React.FC = () => {
 
     try {
       await APiClient.post("/user/verify-otp", {
-        userId: localStorage.getItem("registerUser"),
+        userId: sessionStorage.getItem("registerUser"),
         otp,
       });
 
@@ -438,8 +438,8 @@ const RegisterLoginPage: React.FC = () => {
 
       const loginResponse = await APiClient.post("/user/login", formData);
       const token = loginResponse.data.token;
-      localStorage.setItem("token", token);
-      localStorage.setItem("user", loginResponse.data.user.id);
+      sessionStorage.setItem("token", token);
+      sessionStorage.setItem("user", loginResponse.data.user.id);
       router.push("/");
     } catch (error) {
       if (error instanceof AxiosError) {

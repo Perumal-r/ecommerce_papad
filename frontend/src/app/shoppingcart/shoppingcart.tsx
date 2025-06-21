@@ -1,15 +1,15 @@
 "use client";
 
+import APiClient from "@/api/ApiClient";
+import { fetchCart } from "@/redux/slice/cartSlice";
 import { RootState } from "@/redux/store/store";
 import Image from "next/image";
-import { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { AppDispatch } from "../../redux/store/store";
-import { fetchCart } from "@/redux/slice/cartSlice";
-import APiClient from "@/api/ApiClient";
-import toast from "react-hot-toast";
-import SuccessPage from "../successpage.tsx/success";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+import toast from "react-hot-toast";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch } from "../../redux/store/store";
+import SuccessPage from "../successpage.tsx/success";
 
 const useAppDispatch = () => useDispatch<AppDispatch>();
 
@@ -24,16 +24,17 @@ const ShoppingCartPage = () => {
   );
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      const userId_send = window.localStorage.getItem("user") || "";
+      const userId_send = window.sessionStorage.getItem("user") || "";
       dispatch(fetchCart(userId_send));
     }
   }, [dispatch]);
+
   const handlePlaceOrder = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (typeof window === 'undefined') return;
 
-    const userId = localStorage.getItem("user");
+    const userId = sessionStorage.getItem("user");
 
     const form = e.currentTarget;
     const shippingAddress = {
@@ -55,13 +56,12 @@ const ShoppingCartPage = () => {
       shippingAddress,
       paymentMode,
     };
-
     const res = await APiClient.post("/order/place-order", orderData);
 
     if (res.status === 200 || res.status === 201) {
       toast.success("Order placed successfully");
       <SuccessPage />;
-      router.push(`/invoice/${res.data.orderId}`);
+      router.push(`/invoice/${res.data?.order?.userId}`);
     } else {
       toast.error("Failed to place order");
     }

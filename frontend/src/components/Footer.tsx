@@ -2,7 +2,7 @@ import Image from "next/image";
 import { FaFacebook } from "react-icons/fa";
 import { FaSquareInstagram } from "react-icons/fa6";
 import { IoLogoWhatsapp } from "react-icons/io";
-import logoIcon from "../app/images/papad.gif";
+import logoIcon from "../app/images/logo_spp-removebg-preview.png";
 import Link from "next/link";
 
 export default function Footer() {
@@ -16,7 +16,7 @@ export default function Footer() {
             alt="Logo"
             width={100}
             height={100}
-            className="mb-4"
+            className="mb-4 w-40 h-40"
           />
         </div>
         {/* About / Pages */}
@@ -73,15 +73,15 @@ export default function Footer() {
           <p className="text-green-600">
             SPP Papad Factory
             <br />
-            Eight Avenue 385, New York
+            North Street, Annupanadi, Madurai - 625009
             <br />
-            perumal@gmail.com
+            perumalavinash210@gmail.com
           </p>
         </div>
       </div>
 
       {/* Bottom Bar */}
-      <div className="text-center text-black text-gray-500 mt-8 border-t border-gray-700 pt-4">
+      <div className="text-center text-black text-gray-500 mt-8 mb-3 border-t border-gray-700 pt-4">
         <p>&copy; 2025-2030 SPP Papad Factory. All Rights Reserved.</p>
       </div>
     </footer>

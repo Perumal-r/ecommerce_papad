@@ -15,7 +15,7 @@ export default function Navbar() {
   const [isLogin, setIsLogin] = useState(false);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const token = sessionStorage.getItem("token");
     setIsLogin(!!token);
   }, []);
   
@@ -45,7 +45,6 @@ export default function Navbar() {
       target.scrollIntoView({ behavior: "smooth" });
     }
   };
-
   return (
     <nav className="flex items-center justify-between bg-green-50 py-4 shadow sticky top-0 z-50">
       <div className="text-2xl font-bold text-green-600 ml-5">SPP</div>
@@ -69,7 +68,7 @@ export default function Navbar() {
           Contact
         </li>
       </ul>
-      <div className="flex items-center gap-3 mr-5">
+      <div className="flex items-center gap-3 mr-5 cursor-pointer">
         {/* View Order Button */}
         {isLogin &&
         <button
@@ -82,7 +81,7 @@ export default function Navbar() {
 
         {/* Cart Icon (optional) */}
         <button
-          className="text-green-600 hover:text-green-500 text-2xl"
+          className="text-green-600 hover:text-green-500 text-2xl cursor-pointer"
           onClick={() => dispatch(openDrawer())}
         >
           <TiShoppingCart />
@@ -95,7 +94,7 @@ export default function Navbar() {
 
         {/* Logout Button */}
         <button
-          className="text-green-600 hover:text-green-500 text-2xl"
+          className="text-green-600 hover:text-green-500 text-2xl cursor-pointer"
           onClick={handleLogout}
         >
           <IoLogOut />

@@ -1,6 +1,6 @@
 import Image from "next/image";
 import heroImage from "../app/images/heropage.jpg";
-import Logo from "../app/images/papad.gif";
+import Logo from "../app/images/logo_spp-removebg-preview.png";
 import "../app/globals.css"; // Make sure clip-path CSS is included
 import SocialIcons from "./SocialIcons";
 
@@ -24,7 +24,7 @@ export default function Hero() {
           height={300}
           src={heroImage}
           alt="Papad"
-          className="mt-6 rounded-full shadow-lg"
+          className="mt-6 rounded-full bg-white"
         />
       </div>
 
@@ -45,9 +45,9 @@ export default function Hero() {
           <Image
             src={Logo}
             alt="logo"
-            width={300}
-            height={300}
-            className="w-16 h-16 rounded-full shadow-lg mb-6"
+            width={500}
+            height={500}
+            className="w-25 h-25 rounded-full bg-white mb-6"
           />
           <h1 className="text-5xl font-bold text-green-600">SPP PAPAD</h1>
           <h2 className="text-2xl text-green-600">Sweet Memories</h2>

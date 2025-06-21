@@ -106,8 +106,8 @@ export default function Categories() {
 
   useEffect(() => {
     dispatch(fetchCategories());
-    const token = localStorage.getItem("token");
-    const userId_send = window.localStorage.getItem("user");
+    const token = sessionStorage.getItem("token");
+    const userId_send = window.sessionStorage.getItem("user");
     setUserIds(userId_send);
     setLoginId(token);
   }, [dispatch, loginId]);

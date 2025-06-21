@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import React from "react";
-import adminlogo from "../images/adminpapad.gif";
+import adminlogo from "../images/logo_spp-removebg-preview.png";
 import { LuLayoutDashboard } from "react-icons/lu";
 import { FaDatabase } from "react-icons/fa6";
 import { MdOutlineProductionQuantityLimits } from "react-icons/md";

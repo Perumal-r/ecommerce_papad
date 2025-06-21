@@ -5,6 +5,8 @@ const orderSchema = new mongoose.Schema({
   products: [
     {
       productId: { type: mongoose.Schema.Types.ObjectId, ref: "Category" },
+      name: String,
+      price: Number,
       quantity: Number,
     },
   ],
@@ -22,11 +24,10 @@ const orderSchema = new mongoose.Schema({
   paymentMode: String,
   createdAt: { type: Date, default: Date.now },
   status: {
-  type: String,
-  enum: ["pending","shipping","completed", "cancelled"],
-  default: "pending",
-},
-
+    type: String,
+    enum: ["pending", "shipping", "completed", "cancelled"],
+    default: "pending",
+  },
 });
 
 module.exports = mongoose.model("Order", orderSchema);

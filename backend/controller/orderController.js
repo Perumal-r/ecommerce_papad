@@ -1,4 +1,5 @@
 const Order = require("../modules/order");
+const Category = require("../modules/categories");
 const nodemailer = require("nodemailer");
 
 //mail send code
@@ -7,11 +8,10 @@ const sendInvoiceEmail = async (toEmail, order) => {
   const transporter = nodemailer.createTransport({
     service: "gmail", // or use 'smtp.ethereal.email' for testing
     auth: {
-      user: "pr657122@gmail.com", // ✅ Replace with your email
-      pass: "ylgs qsyf oolw eimv", // ✅ Use App Password (not your login)
+      user: "pr657122@gmail.com", // Replace with your email
+      pass: "ylgs qsyf oolw eimv", // Use App Password (not your login)
     },
   });
-
   const mailOptions = {
     from: "<pr657122@gmail.com>",
     to: toEmail,
@@ -20,8 +20,8 @@ const sendInvoiceEmail = async (toEmail, order) => {
       <h2>Invoice for your order</h2>
       <p><strong>Order ID:</strong> ${order._id}</p>
       <p><strong>Total:</strong> ₹${order.totalAmount}</p>
-      <p><strong>Shipping Name:</strong> ${order.shippingAddress.name}</p>
-      <p><strong>Shipping Email:</strong> ${order.shippingAddress.email}</p>
+      <p><strong>Customer Name:</strong> ${order.shippingAddress.name}</p>
+      <p><strong>Customer Email:</strong> ${order.shippingAddress.email}</p>
       <p><strong>Items:</strong></p>
       <ul>
         ${order.products
@@ -62,7 +62,8 @@ const placeOrder = async (req, res) => {
       status: "pending",
       createdAt,
     });
-    await sendInvoiceEmail(shippingAddress.email, order);
+     const populatedOrder = await Order.findById(order._id).populate("products.productId");
+    await sendInvoiceEmail(shippingAddress.email, populatedOrder);
     res.status(201).json({ success: true, orderId: order._id, order });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
@@ -79,17 +80,30 @@ const updateOrderStatus = async (req, res) => {
       return res.status(400).json({ message: "Invalid status value" });
     }
 
-    const order = await Order.findByIdAndUpdate(
+    if (status === "cancelled") {
+      const deletedOrder = await Order.findByIdAndDelete(req.params.id);
+
+      if (!deletedOrder) {
+        return res.status(404).json({ message: "Order not found to delete" });
+      }
+
+      return res.json({
+        message: "Order cancelled and deleted",
+        order: deletedOrder,
+      });
+    }
+
+    const updatedOrder = await Order.findByIdAndUpdate(
       req.params.id,
       { status, createdAt },
       { new: true }
     );
 
-    if (!order) {
+    if (!updatedOrder) {
       return res.status(404).json({ message: "Order not found" });
     }
 
-    res.json({ message: "Order status updated", order });
+    res.json({ message: "Order status updated", updatedOrder });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -98,15 +112,39 @@ const updateOrderStatus = async (req, res) => {
 const getOrderById = async (req, res) => {
   try {
     const userId = req.params.id; // From logged in user
-
     // Fetch all orders by user ID
-    const orders = await Order.find({ userId });
+    const orders = await Order.find({ userId: req.params.id });
 
     if (!orders || orders.length === 0) {
-      return res.status(404).json({ message: "No orders found for this user" });
+      return res.status(200).json({ message: "No orders found for this user" });
     }
 
-    res.json(orders);
+    const enrichedOrders = await Promise.all(
+      orders.map(async (order) => {
+        const enrichedProducts = await Promise.all(
+          order.products.map(async (item) => {
+            const product = await Category.findById(item.productId);
+            return {
+              _id: item._id,
+              productId: {
+                name: product?.name || "Unknown",
+                price: product?.price || 0,
+              },
+              quantity: item.quantity,
+            };
+          })
+        );
+
+        return {
+          ...order._doc,
+          products: enrichedProducts,
+        };
+      })
+    );
+
+    res.status(200).json({ orders: enrichedOrders });
+    // res.json(orders);
+    // console.log("Orders fetched successfully",orders);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }

@@ -55,11 +55,12 @@ export default function ProfilePage() {
           setIsEdit(true);
         }
       } catch (err) {
-        console.log("No existing profile found.");
+        console.log("No existing profile found.",err);
       }
     };
 
     fetchProfile();
+    //eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleInputChange = (field: string, value: string) => {
@@ -209,7 +210,7 @@ export default function ProfilePage() {
                         </label>
                         <input
                           type="text"
-                          value={(profile as any)[field]}
+                          value={profile[field as keyof UserProfile] as string}
                           onChange={(e) => handleInputChange(field, e.target.value)}
                           placeholder={`Enter ${field}`}
                           className="w-full pl-4 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"

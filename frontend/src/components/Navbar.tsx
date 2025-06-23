@@ -18,7 +18,7 @@ export default function Navbar() {
     const token = sessionStorage.getItem("token");
     setIsLogin(!!token);
   }, []);
-  
+
   const dispatch = useAppDispatch();
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -70,14 +70,11 @@ export default function Navbar() {
       </ul>
       <div className="flex items-center gap-3 mr-5 cursor-pointer">
         {/* View Order Button */}
-        {isLogin &&
-        <button
-          className="relative bg-transparent text-green-600 hover:text-green-500 text-sm md:text-base font-semibold px-4 py-2 border border-green-600 rounded"
-        >
-          <Link href="/orderproduct">
-          View Order
-          </Link>
-        </button>}
+        {isLogin && (
+          <button className="relative bg-transparent text-green-600 hover:text-green-500 text-sm md:text-base font-semibold px-4 py-2 border border-green-600 rounded">
+            <Link href="/orderproduct">View Order</Link>
+          </button>
+        )}
 
         {/* Cart Icon (optional) */}
         <button
@@ -99,6 +96,16 @@ export default function Navbar() {
         >
           <IoLogOut />
         </button>
+        {/* Profile Image */}
+        {isLogin && (
+          <Link href="/profile">
+            <img
+              src="/profile.png" // ⬅️ Replace with actual profile image path or URL
+              alt="Profile"
+              className="w-8 h-8 rounded-full object-cover border border-green-600 hover:border-green-500 transition duration-200"
+            />
+          </Link>
+        )}
       </div>
     </nav>
   );

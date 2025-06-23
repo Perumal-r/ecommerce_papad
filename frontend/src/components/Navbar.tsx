@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../redux/store/store";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import Image from "next/image";
 
 const useAppDispatch = () => useDispatch<AppDispatch>();
 
@@ -99,7 +100,9 @@ export default function Navbar() {
         {/* Profile Image */}
         {isLogin && (
           <Link href="/profile">
-            <img
+            <Image
+              width={100}
+              height={100}
               src="/profile.png" // ⬅️ Replace with actual profile image path or URL
               alt="Profile"
               className="w-8 h-8 rounded-full object-cover border border-green-600 hover:border-green-500 transition duration-200"

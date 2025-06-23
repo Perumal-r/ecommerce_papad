@@ -3,12 +3,34 @@
 import { useEffect } from "react";
 import { IoClose } from "react-icons/io5";
 
-export default function ProductModal({ product, onClose }: any) {
+interface Product {
+  _id: string;
+  name: string;
+  price: number;
+  imageUrl: string;
+  description: string;
+  // Add other properties if needed (e.g., category, rating, etc.)
+}
+
+interface ProductModalProps {
+  product: Product | null;
+  onClose: () => void;
+}
+
+export default function ProductModal({ product, onClose }: ProductModalProps) {
   useEffect(() => {
-    const onEsc = (e: any) => e.key === "Escape" && onClose();
+    const onEsc = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        onClose();
+      }
+    };
+
     document.addEventListener("keydown", onEsc);
-    return () => document.removeEventListener("keydown", onEsc);
-  }, []);
+
+    return () => {
+      document.removeEventListener("keydown", onEsc);
+    };
+  }, [onClose]);
 
   if (!product) return null;
 

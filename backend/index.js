@@ -9,6 +9,18 @@ const userRoutes = require("./routes/registerRoutes");
 const cartRoutes = require("./routes/cartRouter");
 const orderRoutes = require("./routes/orderRoutes");
 const profileRoutes = require("./routes/profileRoutes"); // Assuming you have a profile route
+
+const corsOptions = {
+  origin: [
+    "http://localhost:3003",
+    "https://ecommerce-papad-backend.vercel.app",
+  ], // replace with your allowed origins
+  methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
+  credentials: true, // allow cookies (if needed)
+};
+
+app.use(cors(corsOptions));
+
 // Connect MongoDB
 mongoose
   .connect(
@@ -17,7 +29,6 @@ mongoose
   .then(() => console.log("MongoDB connected successfully"))
   .catch((err) => console.log("MongoDB connection error:", err));
 
-app.use(cors());
 app.use(cookieParser());
 app.use(express.json());
 

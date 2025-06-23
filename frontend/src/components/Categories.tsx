@@ -14,7 +14,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { FaCartShopping } from "react-icons/fa6";
+import { FaCartShopping, FaEye } from "react-icons/fa6";
 import { FiMinus } from "react-icons/fi";
 import { IoMdAdd } from "react-icons/io";
 import { IoClose } from "react-icons/io5";
@@ -25,6 +25,7 @@ import emptyCard from "../app/images/empty_card.jpg";
 import { fetchCategories } from "../redux/slice/categorySlice";
 import { AppDispatch } from "../redux/store/store";
 import Counter from "./counter/counter";
+import ProductModal from "./ProductModal";
 
 type CartItem = {
   userId: string;
@@ -37,18 +38,38 @@ type CartItem = {
     quantity: number;
   };
 };
+
+export interface Product {
+  _id: string;
+  name: string;
+  description: string;
+  price: number;
+  imageUrl: string;
+  vendor?: string;
+  mfgDate?: string;
+}
+
 const useAppDispatch = () => useDispatch<AppDispatch>();
 
 export default function Categories() {
   const [loginId, setLoginId] = useState<string | null>(null);
   const [userIds, setUserIds] = useState<string | null>(null);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const dispatch = useAppDispatch();
   const { categories } = useSelector((state: RootState) => state.category);
   const { items: cartItems } = useSelector((state: RootState) => state.cart);
   const isDrawerOpen = useSelector((state: RootState) => state.drawer.isOpen);
   const router = useRouter();
 
-    const handleShopNowClick = () => {
+  const handleView = (product: Product) => {
+    setSelectedProduct(product);
+  };
+
+  const closeModal = () => {
+    setSelectedProduct(null);
+  };
+
+  const handleShopNowClick = () => {
     const target = document.getElementById("categories-section");
     if (target) {
       target.scrollIntoView({ behavior: "smooth" });
@@ -118,7 +139,7 @@ export default function Categories() {
         <Counter />
       </div>
       <h2 className="text-center text-xl sm:text-2xl md:text-3xl font-bold mb-6 md:mb-8">
-        Featured Categories
+        All Categories
       </h2>
 
       <div className="relative">
@@ -135,7 +156,7 @@ export default function Categories() {
           <RiContractRightLine />
         </button>
 
-        <div ref={sliderRef} className="keen-slider px-4 py-6">
+        {/* <div ref={sliderRef} className="keen-slider px-4 py-6">
           {categories.map((cat) => (
             <div
               key={cat?._id}
@@ -175,8 +196,62 @@ export default function Categories() {
               </div>
             </div>
           ))}
+        </div> */}
+        <div ref={sliderRef} className="keen-slider px-4 py-6">
+          {categories.map((cat) => (
+            <div key={cat?._id} className="keen-slider__slide px-2">
+              <div className="bg-white rounded-lg shadow hover:shadow-lg flex flex-col h-full min-h-[200px] p-6">
+                {/* Image + Hover Overlay */}
+                <div className="relative group">
+                  {/* Image */}
+                  <Image
+                    src={cat?.imageUrl}
+                    alt={cat?.name}
+                    width={500}
+                    height={300}
+                    className="w-full h-40 object-cover rounded"
+                  />
+
+                  {/* Blur + dark overlay */}
+                  <div className="absolute inset-0 bg-opacity-0 backdrop-blur-sm rounded opacity-0 group-hover:opacity-100 transition duration-300 flex items-center justify-center">
+                    {/* Eye Icon */}
+                    <button
+                      className="text-white hover:text-green-400 transition cursor-pointer"
+                      onClick={() => cat._id && handleView(cat as Product)}
+                    >
+                      <FaEye size={28} />
+                    </button>
+                  </div>
+                </div>
+
+                {/* Product Details */}
+                <h3 className="mt-4 font-bold text-lg">{cat.name}</h3>
+                <p className="text-gray-600 text-md">Price : ₹ {cat.price}</p>
+                <p className="text-gray-600 text-md mb-4">Free Delivery</p>
+
+                {/* Add to Cart */}
+                <div className="mt-auto">
+                  <button
+                    onClick={() =>
+                      handleAddToCart({
+                        userId: userIds || "",
+                        productId: cat._id || "",
+                        price: cat.price || 0,
+                        quantity: 1,
+                      })
+                    }
+                    className="w-full px-4 py-2 flex items-center justify-center bg-green-700 text-white rounded hover:bg-green-600 transition cursor-pointer"
+                  >
+                    <FaCartShopping />
+                    <span className="ml-2">Add to Cart</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
+      <ProductModal product={selectedProduct} onClose={closeModal} />
       {/* Cart Drawer */}
       {isDrawerOpen && (
         <div className="fixed top-0 right-0 h-full w-full sm:w-[400px] bg-white shadow-lg z-50 p-6 transition-all duration-300 ease-in-out overflow-y-auto">
@@ -193,7 +268,12 @@ export default function Categories() {
             <div className="flex flex-col items-center justify-center min-h-[60vh] p-4 text-center">
               {/* Plus/Minus icons - decorative */}
               <div className="flex space-x-8 mb-6 text-gray-400">
-                <Image src={emptyCard} alt="emptycard" width={200} height={200} />
+                <Image
+                  src={emptyCard}
+                  alt="emptycard"
+                  width={200}
+                  height={200}
+                />
               </div>
 
               {/* Main message */}
@@ -210,11 +290,13 @@ export default function Categories() {
               </div>
 
               {/* Shopping button */}
-             
-                <button onClick={handleShopNowClick} className=" bg-gray-600 px-5 py-1 cursor-pointer text-white rounded-md hover:bg-gray-700 transition-colors">
-                  GO TO SHOPPING
-                </button>
-             
+
+              <button
+                onClick={handleShopNowClick}
+                className=" bg-gray-600 px-5 py-1 cursor-pointer text-white rounded-md hover:bg-gray-700 transition-colors"
+              >
+                GO TO SHOPPING
+              </button>
             </div>
           ) : (
             <>
@@ -322,9 +404,9 @@ export default function Categories() {
 
               {/* Checkout Button */}
               <Link href="/shoppingcart">
-              <button className="w-full mt-4 bg-green-700 text-white py-2 rounded hover:bg-green-600 transition cursor-pointer">
-                Check Out
-              </button>
+                <button className="w-full mt-4 bg-green-700 text-white py-2 rounded hover:bg-green-600 transition cursor-pointer">
+                  Check Out
+                </button>
               </Link>
               <div className="flex items-center w-full  bg-white-100 mt-5">
                 <h4 className="font-bold">Delivery Information:</h4>
@@ -341,7 +423,6 @@ export default function Categories() {
           )}
         </div>
       )}
-   
     </section>
   );
 }
